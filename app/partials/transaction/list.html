@@ -1,8 +1,8 @@
 <div class="container">
     <div class="row clearfix">
-        
+
         <div ng-include="" src="'partials/menu.html'"></div>
-        
+
         <div class="col-md-12">
 
             <div class="row clearfix">
@@ -19,7 +19,7 @@
                                 <th></th>
                                 <th>Comment</th>
                                 <th class="text-right">Amount</th>
-                                <th></th>
+                                <th class="col-md-1"></th>
                             </tr>
                         </thead>
 
@@ -28,10 +28,10 @@
                             <td>{{transaction.category}}</td>
                             <td>{{transaction.type}}</td>
                             <td>{{transaction.comment}}</td>
-                            <td class="text-right">{{transaction.amount|number:2}} €</td>
+                            <td class="text-right {{cssClass(transaction.amount)}}">{{transaction.amount|number:2}} €</td>
                             <td>
-                                <a class="" ng-click="edit(transaction)"><i class="icon-pencil icon-white"></i> edit</a>
-                                <a class="" ng-click="remove(transaction)"><i class="icon-trash icon-white"></i> delete</a>
+                                <a class="btn btn-xs" ng-click="edit(transaction)" title="edit"><i class="icon-pencil icon-white"></i>...</a>
+                                <a class="btn btn-xs" ng-click="remove(transaction)" title="delete"><i class="icon-trash icon-white"></i>X</a>
                             </td>
                         </tr>
 

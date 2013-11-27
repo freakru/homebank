@@ -40,6 +40,19 @@ hbControllers.controller('TransactionCtrl', ['$scope', 'Transaction', 'Account',
         $scope.remove = function(transaction) {
             transaction.$delete();
         };
+        
+        $scope.cssClass = function(amount) {
+            amount = parseFloat(amount, 10);
+            var cssClass = 'text-warning';
+            if(amount > 0) {
+                cssClass = 'text-success';
+            } else if(amount < -99) {
+                cssClass = 'text-danger';
+            } else if(amount < -49) {
+                cssClass = 'text-warning';                
+            }
+            return cssClass;
+        }
 
 
         $scope.drawChart = function() {
