@@ -1,0 +1,10 @@
+<div class="navbar navbar-default" role="navigation">
+    <div class="navbar-header">
+        <a class="navbar-brand" href="#">Home Bank</a>
+    </div>
+    <div class="navbar-collapse collapse" ng-controller="MenuCtrl">
+        <ul class="nav navbar-nav">
+            <li ng-repeat="menuItem in menuItems"><a href="{{menuItem.link}}">{{menuItem.title}}</a></li>
+        </ul>
+    </div><!--/.nav-collapse -->
+</div>

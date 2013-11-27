@@ -2,19 +2,23 @@
 
 /* App Module */
 
-var phonecatApp = angular.module('phonecatApp', [
+var hbApp = angular.module('hbApp', [
   'ngRoute',
   'phonecatAnimations',
 
-  'transactionControllers',
+  'hbControllers',
   'phonecatFilters',
   'hbServices',
   'angles'
 ]);
 
-phonecatApp.config(['$routeProvider',
+hbApp.config(['$routeProvider',
   function($routeProvider) {
     $routeProvider.
+      when('/overview', {
+        templateUrl: 'partials/transaction/list.html',
+        controller: 'TransactionCtrl'
+      }).
       when('/transactions', {
         templateUrl: 'partials/transaction/list.html',
         controller: 'TransactionCtrl'

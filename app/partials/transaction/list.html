@@ -1,7 +1,8 @@
-<canvas barchart type="Line" options="options" data="chart" width="1500" height="600"></canvas>
-
 <div class="container">
     <div class="row clearfix">
+        
+        <div ng-include="" src="'partials/menu.html'"></div>
+        
         <div class="col-md-12">
 
             <div class="row clearfix">
@@ -22,7 +23,7 @@
                             </tr>
                         </thead>
 
-                        <tr ng-repeat="transaction in transactions| filter:query | orderBy:orderProp" class="">
+                        <tr ng-repeat="transaction in transactions| filter:query | orderBy:'-date'" class="">
                             <td>{{transaction.date}}</td>
                             <td>{{transaction.category}}</td>
                             <td>{{transaction.type}}</td>

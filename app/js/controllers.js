@@ -1,10 +1,8 @@
 'use strict';
 
-/* Controllers */
+var hbControllers = angular.module('hbControllers', []);
 
-var transactionControllers = angular.module('transactionControllers', []);
-
-transactionControllers.controller('TransactionCtrl', ['$scope', 'Transaction', 'Account', 'Category',
+hbControllers.controller('TransactionCtrl', ['$scope', 'Transaction', 'Account', 'Category',
     function($scope, Transaction, Account, Category) {
 
 
@@ -92,7 +90,7 @@ transactionControllers.controller('TransactionCtrl', ['$scope', 'Transaction', '
 
     }]);
 
-transactionControllers.controller('TransactionDetailCtrl', ['$scope', '$routeParams', 'Transaction',
+hbControllers.controller('TransactionDetailCtrl', ['$scope', '$routeParams', 'Transaction',
     function($scope, $routeParams, Transaction) {
         $scope.transaction = Transaction.get({transactionId: $routeParams.transactionId}, function(transaction) {
             $scope.mainImageUrl = transaction.images[0];
@@ -100,5 +98,17 @@ transactionControllers.controller('TransactionDetailCtrl', ['$scope', '$routePar
 
         $scope.setImage = function(imageUrl) {
             $scope.mainImageUrl = imageUrl;
-        }
-    }]);
+        };
+}]);
+
+hbControllers.controller('MenuCtrl', ['$scope',
+    function($scope) {
+        $scope.menuItems = [
+            {
+                link: '#/overview', title: 'Overview'
+            },
+            {
+                link: '#/transactions', title: 'Transactions'
+            }
+        ];
+}]);
