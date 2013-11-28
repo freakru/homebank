@@ -151,8 +151,20 @@ class TransactionController extends Controller {
     }
 
     public function statistic() {
+        $app = \Slim\Slim::getInstance();
+        $req = $app->request();
+        
         $db = $this->getDb();
-        $transactions = $db->transaction()->select("category_id, SUM(amount) amount")->group('category_id');
+        
+        $startDate = $req->params('startdate') ? $req->params('startdate') : '01.01.1900';
+        $endDate = $req->params('enddate') ? $req->params('enddate') : '31.12.9999';        
+        
+        $start = util\DateUtil::formatMysql($startDate);
+        $end = util\DateUtil::formatMysql($endDate);
+        $transactions = $db->transaction()
+                ->select('category_id, SUM(amount) amount')
+                ->where('date > ? and date < ?', $start, $end)
+                ->group('category_id');
         $result = array();
         foreach ($transactions as $transaction) {
             $result[] = array(

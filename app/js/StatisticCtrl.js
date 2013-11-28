@@ -1,8 +1,15 @@
 hbControllers.controller('StatisticCtrl', ['$scope', 'Transaction',
     function($scope, Transaction) {
+        
+        $scope.param = {};
 
         $scope.fetch = function(callback) {
-            $scope.transactions = Transaction.query({id: 'statistic'}, callback);
+            var param = {
+                id: 'statistic',
+                startdate: $scope.param.startdate,
+                enddate: $scope.param.enddate
+            };
+            $scope.transactions = Transaction.query(param, callback);
             $scope.orderProp = 'age';
         };
 
@@ -70,6 +77,10 @@ hbControllers.controller('StatisticCtrl', ['$scope', 'Transaction',
             $scope.piechartOptions = {};
             
             $scope.piechart = data;
+        };
+        
+        $scope.runQuery = function() {
+            $scope.fetch($scope.drawPiechart);
         };
 
         $scope.fetch($scope.drawPiechart);
