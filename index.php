@@ -17,10 +17,12 @@ header("Content-Type: application/json");
 $app->group('/api', function () use ($app) {
     $app->group('/transaction', function () use ($app) {
         $ctrl = new \hb\TransactionController();
+        $app->get('/:id', array ($ctrl, 'get'))->conditions(array('id' => '\d+'));
+        $app->get('/statistic', array ($ctrl, 'statistic'));
         $app->get('/importSparkasse', array ($ctrl, 'importSparkasse'));
         $app->get('/importGoogleDrive', array ($ctrl, 'importGoogleDrive'));
         $app->get('/', array ($ctrl, 'index'));
-        //$app->get('/:id', array ($ctrl, 'get'));
+        
         $app->post('/', array ($ctrl, 'save'));
         $app->put('/:id', array ($ctrl, 'update'));
         $app->delete('/:id', array ($ctrl, 'delete'));

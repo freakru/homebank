@@ -128,7 +128,7 @@ class TransactionController extends Controller {
             }
 
             $category = new \hb\model\Category();
-            
+
             $cat = $category->get('name', $csvData[1]);
             if (!$cat['id']) {
                 $cat = $category->save(array('name' => $csvData[1]));
@@ -148,6 +148,20 @@ class TransactionController extends Controller {
             $transaction->save($data);
         }
         fclose($handle);
+    }
+
+    public function statistic() {
+        $db = $this->getDb();
+        $transactions = $db->transaction()->select("category_id, SUM(amount) amount")->group('category_id');
+        $result = array();
+        foreach ($transactions as $transaction) {
+            $result[] = array(
+                'category' => $transaction->category['name'],
+                'amount' => $transaction['amount']
+            );
+        }
+
+        echo json_encode($result);
     }
 
 }

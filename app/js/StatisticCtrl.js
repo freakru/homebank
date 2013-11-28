@@ -2,11 +2,11 @@ hbControllers.controller('StatisticCtrl', ['$scope', 'Transaction',
     function($scope, Transaction) {
 
         $scope.fetch = function(callback) {
-            $scope.transactions = Transaction.query({}, callback);
+            $scope.transactions = Transaction.query({id: 'statistic'}, callback);
             $scope.orderProp = 'age';
         };
 
-        $scope.drawChart = function() {
+        $scope.drawBarchart = function() {
             var labels = [];
             var data = [];
             var sum = 2800;
@@ -48,25 +48,29 @@ hbControllers.controller('StatisticCtrl', ['$scope', 'Transaction',
                     }
                 ],
             };
-
-            $scope.piechart = [
-                {
-                    value: 25,
-                    color: "#F7464A"
-                    ,
-                label : 'Sleep',
-                labelColor : 'white',
-                labelFontSize : '16'
-                },
-                {
-                    value: 35,
-                    color: "#F74fff",
-                label : 'Sleep',
-                labelColor : 'white',
-                labelFontSize : '16'
-                },
-            ];
         };
 
-        $scope.fetch($scope.drawChart);
+        $scope.drawPiechart = function() {
+            var data = [];
+            $scope.transactions.forEach(function(transaction) {
+                var amount = parseFloat(transaction.amount, 10);
+                if (amount > 0) {
+                    return;
+                }
+                var item = {
+                    value: amount,
+                    color: '#'+(Math.random()*0xFFFFFF<<0).toString(16),
+                    label: transaction.category,                    
+                    labelColor: 'white',
+                    labelFontSize: '16'                    
+                };
+                data.push(item);
+            });
+            
+            $scope.piechartOptions = {};
+            
+            $scope.piechart = data;
+        };
+
+        $scope.fetch($scope.drawPiechart);
     }]);
