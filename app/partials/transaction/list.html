@@ -1,47 +1,30 @@
-<div class="container">
-    <div class="row clearfix">
+<div class="col-md-4 column">
+    <div ng-include="" src="'partials/transaction/form.html'"></div>
+</div>
 
-        <div ng-include="" src="'partials/menu.html'"></div>
+<div class="col-md-8 column">
+    <table class="table table-bordered table-hover table-condensed">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Category</th>
+                <th></th>
+                <th>Comment</th>
+                <th class="col-md-2 text-right">Amount</th>
+                <th class="col-md-1"></th>
+            </tr>
+        </thead>
 
-        <div class="col-md-12">
-
-            <div class="row clearfix">
-                <div class="col-md-4 column">
-
-                    <div ng-include="" src="'partials/transaction/form.html'"></div>
-                </div>
-
-                <div class="col-md-8 column"><table class="table table-bordered table-hover table-condensed">
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Category</th>
-                                <th></th>
-                                <th>Comment</th>
-                                <th class="text-right">Amount</th>
-                                <th class="col-md-1"></th>
-                            </tr>
-                        </thead>
-
-                        <tr ng-repeat="transaction in transactions| filter:query | orderBy:'-date'" class="">
-                            <td>{{transaction.date}}</td>
-                            <td>{{transaction.category}}</td>
-                            <td>{{transaction.type}}</td>
-                            <td>{{transaction.comment}}</td>
-                            <td class="text-right {{cssClass(transaction.amount)}}">{{transaction.amount|number:2}} €</td>
-                            <td>
-                                <a class="btn btn-xs" ng-click="edit(transaction)" title="edit"><i class="icon-pencil icon-white"></i>...</a>
-                                <a class="btn btn-xs" ng-click="remove(transaction)" title="delete"><i class="icon-trash icon-white"></i>X</a>
-                            </td>
-                        </tr>
-
-
-                    </table>  
-                </div>
-            </div>
-
-
-
-        </div>
-    </div>
+        <tr ng-repeat="transaction in transactions| filter:query | orderBy:'-date'" class="">
+            <td>{{transaction.date}}</td>
+            <td>{{transaction.category.name}}</td>
+            <td>{{transaction.type}}</td>
+            <td>{{transaction.comment}}</td>
+            <td class="text-right {{cssClass(transaction.amount)}}">{{transaction.amount|number:2}} €</td>
+            <td>
+                <a class="btn btn-xs" ng-click="edit(transaction)" title="edit"><i class="icon-pencil icon-white"></i>...</a>
+                <a class="btn btn-xs" ng-click="remove(transaction)" title="delete"><i class="icon-trash icon-white"></i>X</a>
+            </td>
+        </tr>
+    </table>  
 </div>

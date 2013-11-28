@@ -23,6 +23,11 @@ hbApp.config(['$routeProvider',
         templateUrl: 'partials/transaction/list.html',
         controller: 'TransactionCtrl'
       }).
+      when('/statistic', {
+        templateUrl: 'partials/statistic/index.html',
+        controller: 'StatisticCtrl'
+      }).
+              
       when('/transaction/:transactionId', {
         templateUrl: 'partials/transaction-detail.html',
         controller: 'TransactionDetailCtrl'
