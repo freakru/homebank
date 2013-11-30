@@ -38,7 +38,7 @@ class TransactionController extends Controller {
                 'account_to' => $transaction->account_to['name'],
                 'date' => \hb\util\DateUtil::formatGerman($transaction['date']),
                 'category' => array('id' => $transaction->category['id'],
-                    'name' => $transaction->category['name']),
+                'name' => $transaction->category['name']),
                 'type' => $transaction->type['name'],
                 'comment' => $transaction['comment'],
                 'amount' => $transaction['amount']

@@ -1,13 +1,16 @@
 hbControllers.controller('StatisticCtrl', ['$scope', 'Transaction',
     function($scope, Transaction) {
         
-        $scope.param = {};
-
+        $scope.param = {
+            startdate: moment().format('DD.MM.YYYY'),
+            enddate: moment().format('DD.MM.YYYY'),
+        };
+        
         $scope.fetch = function(callback) {
             var param = {
                 id: 'statistic',
                 startdate: $scope.param.startdate,
-                enddate: $scope.param.enddate
+                enddate: $scope.param.enddate                
             };
             $scope.transactions = Transaction.query(param, callback);
             $scope.orderProp = 'age';
