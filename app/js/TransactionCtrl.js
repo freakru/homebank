@@ -40,6 +40,10 @@ hbControllers.controller('TransactionCtrl', ['$scope', 'Transaction', 'Account',
                 limit: 10,
                 page: $scope.currentPage
             };
+            Transaction.query({id: 'balance'}, function(data) {
+                $scope.balance = data;
+            });
+            
             Transaction.query(param, function(data) {
                 $scope.transactions = data;
             });

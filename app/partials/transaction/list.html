@@ -1,4 +1,8 @@
 <div class="col-md-4 column">
+    <h3>Balance: </h3>
+    <ul class="list-group">
+        <li class="list-group-item" ng-repeat="b in balance">{{b.account}}: {{b.amount | number:2}} €</li>
+    </ul>
     <div ng-include="" src="'partials/transaction/form.html'"></div>
 </div>
 
