@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 22. Nov 2013 um 21:33
+-- Erstellungszeit: 01. Dez 2013 um 19:19
 -- Server Version: 5.5.27
 -- PHP-Version: 5.4.7
 
@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS `account` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(128) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 --
 -- Daten für Tabelle `account`
@@ -38,9 +38,7 @@ CREATE TABLE IF NOT EXISTS `account` (
 
 INSERT INTO `account` (`id`, `name`) VALUES
 (1, 'Bargeld'),
-(2, 'Sparkasse'),
-(3, 'xx'),
-(4, 'sdsdsd');
+(2, 'Sparkasse');
 
 -- --------------------------------------------------------
 
@@ -51,15 +49,24 @@ INSERT INTO `account` (`id`, `name`) VALUES
 CREATE TABLE IF NOT EXISTS `category` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(128) NOT NULL,
+  `symbol` varchar(128) NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 --
 -- Daten für Tabelle `category`
 --
 
-INSERT INTO `category` (`id`, `name`) VALUES
-(1, 'Lebensmittel');
+INSERT INTO `category` (`id`, `name`, `symbol`) VALUES
+(1, 'Lebensmittel', 'leaf'),
+(2, 'Anderes', 'asterisk'),
+(3, 'Spar', 'cog'),
+(4, 'Kredit', 'folder-close'),
+(5, 'Auto', 'dashboard'),
+(6, 'Versicherung', 'flash'),
+(7, 'Haus', 'home'),
+(8, 'Telefon', 'phone'),
+(9, 'Gehalt', 'usd');
 
 -- --------------------------------------------------------
 
@@ -75,16 +82,36 @@ CREATE TABLE IF NOT EXISTS `transaction` (
   `account_id` int(11) NOT NULL,
   `account_to_id` int(11) DEFAULT NULL,
   `comment` varchar(128) NOT NULL,
-  `amount` decimal(10,0) NOT NULL,
+  `amount` decimal(10,2) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 --
 -- Daten für Tabelle `transaction`
 --
 
-INSERT INTO `transaction` (`id`, `date`, `category_id`, `type_id`, `account_id`, `account_to_id`, `comment`, `amount`) VALUES
-(1, '2013-11-22 00:00:00', 1, 1, 1, NULL, 'Rossmann', -20);
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `type`
+--
+
+CREATE TABLE IF NOT EXISTS `type` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(128) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+--
+-- Daten für Tabelle `type`
+--
+
+INSERT INTO `type` (`id`, `name`) VALUES
+(1, 'income'),
+(2, 'expense'),
+(3, 'transfer'),
+(4, 'balance');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
