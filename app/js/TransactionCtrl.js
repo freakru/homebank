@@ -35,12 +35,14 @@ hbControllers.controller('TransactionCtrl', ['$scope', 'Transaction', 'Account',
             $scope.transaction = new Transaction;
         };
 
-        $scope.fetch = function(callback) {
+        $scope.fetch = function() {
             var param =  {
                 limit: 10,
                 page: $scope.currentPage
             };
-            $scope.transactions = Transaction.query(param, callback);
+            Transaction.query(param, function(data) {
+                $scope.transactions = data;
+            });
             $scope.orderProp = 'age';
         };
 
