@@ -2,14 +2,17 @@
 
 hbApp.directive('bDatepicker', function() {
     return {
-        restrict: 'A',
-        link: function(scope, el, attr) {
-            el.datepicker();
+        require: 'ngModel',
+        link: function(scope, el, attr, ngModel) {
+            el.datepicker({
+                weekStart: 1
+            }).on('changeDate', function(e) {
+                scope.$apply(function() {
+                    var date = moment(e.date).format('DD.MM.YYYY');
+                    ngModel.$setViewValue(date);
+                });
+            });
         }
     };
-});
-
-$("#standalone").datepicker().on('changeDate', function(ev) {
-    alert(ev.date)
 });
 

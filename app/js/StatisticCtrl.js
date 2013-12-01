@@ -77,7 +77,9 @@ hbControllers.controller('StatisticCtrl', ['$scope', 'Transaction',
                 data.push(item);
             });
             
-            $scope.piechartOptions = {};
+            $scope.piechartOptions = {
+                animation: false
+            };
             
             $scope.piechart = data;
         };
