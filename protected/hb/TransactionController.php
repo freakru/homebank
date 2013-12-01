@@ -97,7 +97,8 @@ class TransactionController extends Controller {
     }
 
     public function importSparkasse() {
-        $fileName = 'data/10.2013.csv';
+        $fileName = 'data/10.2013.sparkasse.csv';
+        $db = $this->getDb();
         $row = 0;
         if (($handle = fopen($fileName, "r")) !== FALSE) {
             while (($csvData = fgetcsv($handle, 1000, ";")) !== FALSE) {
@@ -105,17 +106,48 @@ class TransactionController extends Controller {
                 if ($row == 1) {
                     continue;
                 }
+                $rawCategory = $csvData['5'];
+                $categoryName = '';
+                if (strstr($rawCategory, 'ELLER-MONTAN')
+                        || strstr($rawCategory, 'TANKSTELLE')) {
+                    $categoryName = 'Auto';
+                }
+                if (strstr($rawCategory, 'NETTO-EINFACH')
+                        ||strstr($rawCategory, 'KAUFPARK')) {
+                    $categoryName = 'Lebensmittel';
+                }
+                if (strstr($rawCategory, 'ELENA MAER')
+                        ||strstr($rawCategory, 'STADTWERKE')) {
+                    $categoryName = 'Haus';
+                }
+                if (strstr($rawCategory, 'O2')
+                        ||strstr($rawCategory, 'UNITYMEDIA')) {
+                    $categoryName = 'Telefon';
+                }
+                if (strstr($rawCategory, 'BITMARCK')) {
+                    $categoryName = 'Gehalt';
+                }
+                
+                $category = new \hb\model\Category();
+                $cat = $category->get('name', $categoryName);
+                if (!$cat['id']) {
+                    $cat = $category->save(array('name' => $categoryName));
+                }
+
+                $categoryId = 1;
+                if ($cat['id']) {
+                    $categoryId = $cat['id'];
+                }
+
                 $app = \Slim\Slim::getInstance();
 
-                $dateArr = explode('.', $csvData[2]);
-                $date = $dateArr[2] . '-' . $dateArr[1] . '-' . $dateArr[0] . ' 00:00:00';
                 $type = strpos('-', $csvData[8]) === false ? TransactionController::$INCOME : TransactionController::$EXPENSE;
                 $data = array(
                     'account_id' => 1,
-                    'date' => $date,
-                    'category_id' => 1,
+                    'date' => $csvData[2],
+                    'category_id' => $categoryId,
                     'type_id' => $type,
-                    'comment' => $csvData[5],
+                    'comment' => ucfirst(strtolower($csvData[5])),
                     'amount' => str_replace(',', '.', $csvData[8])
                 );
                 $transaction = new \hb\model\Transaction();
