@@ -2,11 +2,12 @@ hbControllers.controller('TransactionCtrl', ['$scope', 'Transaction', 'Account',
     function($scope, Transaction, Account, Category) {
 
         $scope.totalItems = 64;
-        $scope.currentPage = 4;
+        $scope.currentPage = 1;
         $scope.maxSize = 5;
 
-        $scope.setPage = function(pageNo) {
-            $scope.currentPage = pageNo;
+        $scope.setPage = function(page) {
+            $scope.currentPage = page;
+            $scope.fetch();
         };
 
         $scope.accounts = Account.query();
@@ -35,8 +36,11 @@ hbControllers.controller('TransactionCtrl', ['$scope', 'Transaction', 'Account',
         };
 
         $scope.fetch = function(callback) {
-
-            $scope.transactions = Transaction.query({}, callback);
+            var param =  {
+                limit: 10,
+                page: $scope.currentPage
+            };
+            $scope.transactions = Transaction.query(param, callback);
             $scope.orderProp = 'age';
         };
 

@@ -2,7 +2,7 @@
     <div ng-include="" src="'partials/transaction/form.html'"></div>
 </div>
 
-<div class="col-md-8 column" ng-controller="TransactionCtrl">
+<div class="col-md-8 column">
     <table class="table table-bordered table-hover table-condensed">
         <thead>
             <tr>
@@ -27,5 +27,5 @@
             </td>
         </tr>
     </table>
-    <pagination boundary-links="true" total-items="totalItems" page="currentPage" class="pagination-small" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+    <pagination on-select-page="setPage(page)" boundary-links="true" total-items="totalItems" page="currentPage" class="pagination-small" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
 </div>

@@ -28,8 +28,15 @@ class TransactionController extends Controller {
     }
 
     public function index() {
+        $app = \Slim\Slim::getInstance();
+        $req = $app->request();
+        $limit = $req->params('limit') ? $req->params('limit') : 10;
+        $page = $req->params('page') ? $req->params('page') - 1 : 0;
+                
         $db = $this->getDb();
-        $transactions = $db->transaction()->order('date');
+        $transactions = $db->transaction()
+                ->order('date')
+                ->limit($limit, $page * $limit);
         $result = array();
         foreach ($transactions as $transaction) {
             $result[] = array(
