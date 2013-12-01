@@ -32,7 +32,7 @@ class TransactionController extends Controller {
         $req = $app->request();
         $limit = $req->params('limit') ? $req->params('limit') : 10;
         $page = $req->params('page') ? $req->params('page') - 1 : 0;
-                
+
         $db = $this->getDb();
         $transactions = $db->transaction()
                 ->order('date')
@@ -45,7 +45,7 @@ class TransactionController extends Controller {
                 'account_to' => $transaction->account_to['name'],
                 'date' => \hb\util\DateUtil::formatGerman($transaction['date']),
                 'category' => array('id' => $transaction->category['id'],
-                'name' => $transaction->category['name']),
+                    'name' => $transaction->category['name']),
                 'type' => $transaction->type['name'],
                 'comment' => $transaction['comment'],
                 'amount' => $transaction['amount']
@@ -160,12 +160,12 @@ class TransactionController extends Controller {
     public function statistic() {
         $app = \Slim\Slim::getInstance();
         $req = $app->request();
-        
+
         $db = $this->getDb();
-        
+
         $startDate = $req->params('startdate') ? $req->params('startdate') : '01.01.1900';
-        $endDate = $req->params('enddate') ? $req->params('enddate') : '31.12.9999';        
-        
+        $endDate = $req->params('enddate') ? $req->params('enddate') : '31.12.9999';
+
         $start = util\DateUtil::formatMysql($startDate);
         $end = util\DateUtil::formatMysql($endDate);
         $transactions = $db->transaction()
@@ -176,6 +176,22 @@ class TransactionController extends Controller {
         foreach ($transactions as $transaction) {
             $result[] = array(
                 'category' => $transaction->category['name'],
+                'amount' => $transaction['amount']
+            );
+        }
+
+        echo json_encode($result);
+    }
+
+    public function balance() {
+        $db = $this->getDb();
+        $transactions = $db->transaction()
+                ->select('account_id, SUM(amount) amount')
+                ->group('account_id');
+        $result = array();
+        foreach ($transactions as $transaction) {
+            $result[] = array(
+                'account' => $transaction->account['name'],
                 'amount' => $transaction['amount']
             );
         }
