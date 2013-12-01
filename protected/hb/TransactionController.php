@@ -44,8 +44,10 @@ class TransactionController extends Controller {
                 'account' => $transaction->account['name'],
                 'account_to' => $transaction->account_to['name'],
                 'date' => \hb\util\DateUtil::formatGerman($transaction['date']),
-                'category' => array('id' => $transaction->category['id'],
-                    'name' => $transaction->category['name']),
+                'category' => array(
+                    'id' => $transaction->category['id'],
+                    'name' => $transaction->category['name'],
+                    'symbol' => $transaction->category['symbol']),
                 'type' => $transaction->type['name'],
                 'comment' => $transaction['comment'],
                 'amount' => $transaction['amount']

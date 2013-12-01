@@ -66,6 +66,6 @@ hbControllers.controller('TransactionCtrl', ['$scope', 'Transaction', 'Account',
             }
             return cssClass;
         };
-
+        
         $scope.fetch();
     }]);
