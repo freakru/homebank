@@ -2,7 +2,7 @@
     <div ng-include="" src="'partials/transaction/form.html'"></div>
 </div>
 
-<div class="col-md-8 column">
+<div class="col-md-8 column" ng-controller="TransactionCtrl">
     <table class="table table-bordered table-hover table-condensed">
         <thead>
             <tr>
@@ -26,5 +26,6 @@
                 <a class="btn btn-xs" ng-click="remove(transaction)" title="delete"><i class="icon-trash icon-white"></i>X</a>
             </td>
         </tr>
-    </table>  
+    </table>
+    <pagination boundary-links="true" total-items="totalItems" page="currentPage" class="pagination-small" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
 </div>

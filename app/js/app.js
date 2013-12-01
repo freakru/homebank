@@ -9,7 +9,8 @@ var hbApp = angular.module('hbApp', [
   'hbControllers',
   'phonecatFilters',
   'hbServices',
-  'angles'
+  'angles',
+  'ui.bootstrap'
 ]);
 
 hbApp.config(['$routeProvider',
