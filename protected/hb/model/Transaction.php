@@ -12,6 +12,7 @@ class Transaction extends Model {
         $transaction = $this->db->transaction();
         
         if (isset($data['id'])) {
+            $transaction = $this->db->transaction[$data['id']];
             return $transaction->update($data);
         }
         
