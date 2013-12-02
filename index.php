@@ -38,6 +38,7 @@ $app->group('/api', function () use ($app) {
     
     $app->group('/category', function () use ($app) {
         $ctrl = new \hb\CategoryController();
+        $app->get('/:id', array ($ctrl, 'get'))->conditions(array('id' => '\d+'));
         $app->get('/', array ($ctrl, 'index'));
     });
 });

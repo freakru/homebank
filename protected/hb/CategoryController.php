@@ -3,6 +3,20 @@
 namespace hb;
 
 class CategoryController extends Controller {
+    
+    public function get($id) {
+        $db = $this->getDb();
+        $category = $db->category[$id];
+        $result = array();
+
+        $result[] = array(
+            'id' => $category['id'],
+            'name' => $category['name'],
+            'symbol' => $category['symbol']
+        );
+
+        echo json_encode($result);
+    }
 
     public function index() {
         $db = $this->getDb();
@@ -15,7 +29,8 @@ class CategoryController extends Controller {
         foreach ($categories as $category) {
             $result[] = array(
                 'id' => $category['id'],
-                'name' => $category['name']
+                'name' => $category['name'],
+                'symbol' => $category['symbol']
             );
         }
         echo json_encode($result);

@@ -29,6 +29,22 @@ hbControllers.controller('TransactionCtrl', ['$scope', 'Transaction', 'Account',
 
         $scope.edit = function(transaction) {
             $scope.transaction = transaction;
+            
+            // select right account
+            angular.forEach($scope.accounts, function(value, key) {
+                if ($scope.accounts[key].name === $scope.transaction.account) {
+                    $scope.transaction.account = $scope.accounts[key];
+                    return false;
+                }
+            });
+            
+            // select right category
+            angular.forEach($scope.categories, function(value, key) {
+                if ($scope.categories[key].name === $scope.transaction.category.name) {
+                    $scope.transaction.category = $scope.categories[key];
+                    return false;
+                }
+            });
         };
 
         $scope.cancel = function() {
@@ -36,14 +52,14 @@ hbControllers.controller('TransactionCtrl', ['$scope', 'Transaction', 'Account',
         };
 
         $scope.fetch = function() {
-            var param =  {
+            var param = {
                 limit: 10,
                 page: $scope.currentPage
             };
             Transaction.query({id: 'balance'}, function(data) {
                 $scope.balance = data;
             });
-            
+
             Transaction.query(param, function(data) {
                 $scope.transactions = data;
             });
@@ -66,6 +82,6 @@ hbControllers.controller('TransactionCtrl', ['$scope', 'Transaction', 'Account',
             }
             return cssClass;
         };
-        
+
         $scope.fetch();
     }]);
