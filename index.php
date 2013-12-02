@@ -21,7 +21,7 @@ $app->group('/api', function () use ($app) {
         $app->get('/statistic', array ($ctrl, 'statistic'));
         $app->get('/balance', array ($ctrl, 'balance'));
         $app->get('/importSparkasse', array ($ctrl, 'importSparkasse'));
-        $app->get('/importGoogleDrive', array ($ctrl, 'importGoogleDrive'));
+        $app->get('/importGoogledrive', array ($ctrl, 'importGoogledrive'));
         $app->get('/', array ($ctrl, 'index'));
         
         $app->post('/', array ($ctrl, 'save'));

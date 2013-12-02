@@ -157,8 +157,8 @@ class TransactionController extends Controller {
         }
     }
 
-    public function importGoogleDrive() {
-        $fileName = 'data/09.2013.csv';
+    public function importGoogledrive() {
+        $fileName = 'data/09.2013.googledrive.csv';
         $row = 0;
         $transaction = new \hb\model\Transaction();
         $handle = fopen($fileName, "r");
@@ -180,7 +180,7 @@ class TransactionController extends Controller {
             $amount = str_replace(',', '.', $amount);
             $data = array(
                 'account_id' => 1,
-                'date' => \hb\util\DateUtil::formatMysql($csvData[0]),
+                'date' => $csvData[0],
                 'category_id' => $cat['id'],
                 'type_id' => $type,
                 'comment' => $csvData[2],
