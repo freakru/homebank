@@ -7,7 +7,7 @@ var hbServices = angular.module('hbServices', ['ngResource']);
 hbServices.factory('Transaction', ['$resource',
     function($resource) {
         return $resource('../index.php/api/transaction/:id', {}, {
-            query: { method: 'GET', params: {id: ''}, isArray: true},
+            query: { method: 'GET', params: {id: ''}, isArray: false},
             create: { method: 'POST'},
             update: { method: 'PUT', params: {id: '@id'} },
             delete: { method: 'DELETE', params: {id: '@id'} }

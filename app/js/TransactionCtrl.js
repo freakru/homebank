@@ -1,9 +1,9 @@
 hbControllers.controller('TransactionCtrl', ['$scope', 'Transaction', 'Account', 'Category',
     function($scope, Transaction, Account, Category) {
 
-        $scope.totalItems = 64;
+        $scope.totalItems = 0;
         $scope.currentPage = 1;
-        $scope.maxSize = 5;
+        $scope.maxSize = 10;
 
         $scope.setPage = function(page) {
             $scope.currentPage = page;
@@ -57,11 +57,12 @@ hbControllers.controller('TransactionCtrl', ['$scope', 'Transaction', 'Account',
                 page: $scope.currentPage
             };
             Transaction.query({id: 'balance'}, function(data) {
-                $scope.balance = data;
+                $scope.balance = data.items;
             });
 
             Transaction.query(param, function(data) {
-                $scope.transactions = data;
+                $scope.totalItems = data.totalItems;
+                $scope.transactions = data.items;
             });
             $scope.orderProp = 'age';
         };

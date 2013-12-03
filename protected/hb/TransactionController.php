@@ -30,16 +30,20 @@ class TransactionController extends Controller {
     public function index() {
         $app = \Slim\Slim::getInstance();
         $req = $app->request();
-        $limit = $req->params('limit') ? $req->params('limit') : 10;
+        $itemPerPage = 10;
+        $limit = $req->params('limit') ? $req->params('limit') : $itemPerPage;
         $page = $req->params('page') ? $req->params('page') - 1 : 0;
 
         $db = $this->getDb();
+        $result = new \stdClass();
+        $totalItems = $db->transaction()->count('*');
+        $result->totalItems = $totalItems;
         $transactions = $db->transaction()
                 ->order('date')
                 ->limit($limit, $page * $limit);
-        $result = array();
+        
         foreach ($transactions as $transaction) {
-            $result[] = array(
+            $result->items[] = array(
                 'id' => $transaction['id'],
                 'account' => $transaction->account['name'],
                 'account_to' => $transaction->account_to['name'],
@@ -158,7 +162,7 @@ class TransactionController extends Controller {
     }
 
     public function importGoogledrive() {
-        $fileName = 'data/09.2013.googledrive.csv';
+        $fileName = 'data/gd/02.2011.csv';
         $row = 0;
         $transaction = new \hb\model\Transaction();
         $handle = fopen($fileName, "r");
@@ -222,9 +226,9 @@ class TransactionController extends Controller {
         $transactions = $db->transaction()
                 ->select('account_id, SUM(amount) amount')
                 ->group('account_id');
-        $result = array();
+        $result = new \stdClass();
         foreach ($transactions as $transaction) {
-            $result[] = array(
+            $result->items[] = array(
                 'account' => $transaction->account['name'],
                 'amount' => $transaction['amount']
             );
@@ -232,5 +236,5 @@ class TransactionController extends Controller {
 
         echo json_encode($result);
     }
-
+    
 }

@@ -18,7 +18,7 @@
             </tr>
         </thead>
 
-        <tr ng-repeat="transaction in transactions| filter:query | orderBy:'-date'" class="">
+        <tr ng-repeat="transaction in transactions| filter:query | orderBy:'date'" class="">
             <td>{{transaction.date}}</td>
             <td><span class="glyphicon glyphicon-{{transaction.category.symbol}}"></span> {{transaction.category.name}}</td>
             <td>{{transaction.comment}}</td>
