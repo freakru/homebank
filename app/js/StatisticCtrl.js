@@ -12,7 +12,10 @@ hbControllers.controller('StatisticCtrl', ['$scope', 'Transaction',
                 startdate: $scope.param.startdate,
                 enddate: $scope.param.enddate                
             };
-            $scope.transactions = Transaction.query(param, callback);
+            Transaction.query(param, function(data) {
+                $scope.transactions = data.items;
+                callback();
+            });
             $scope.orderProp = 'age';
         };
 
@@ -62,6 +65,9 @@ hbControllers.controller('StatisticCtrl', ['$scope', 'Transaction',
 
         $scope.drawPiechart = function() {
             var data = [];
+            if (!$scope.transactions) {
+                return false;
+            }
             $scope.transactions.forEach(function(transaction) {
                 var amount = parseFloat(transaction.amount, 10);
                 if (amount > 0) {

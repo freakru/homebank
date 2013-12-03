@@ -210,9 +210,9 @@ class TransactionController extends Controller {
                 ->select('category_id, SUM(amount) amount')
                 ->where('date > ? and date < ?', $start, $end)
                 ->group('category_id');
-        $result = array();
+        $result = new \stdClass();
         foreach ($transactions as $transaction) {
-            $result[] = array(
+            $result->items[] = array(
                 'category' => $transaction->category['name'],
                 'amount' => $transaction['amount']
             );
