@@ -10,9 +10,18 @@
 
         <div class="form-group row">
             <div class="col-xs-9">
+                <label class="control-label">Period</label>
+                <select class="form-control" ng-model="period" ng-options="p.title for p in periods">
+                    <option value="">-- period --</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-xs-9">
                 <label class="control-label">Start date</label>
-                <div class="input-group date" b-datepicker data-date-format="dd.mm.yyyy" ng-model="param.startdate">
-                    <input class="form-control" type="date" value="{{param.startdate}}">
+                <div class="input-group date" b-datepicker data-date-format="dd.mm.yyyy" ng-model="period.startdate">
+                    <input class="form-control" type="date" value="{{period.startdate}}">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                 </div>
             </div>
@@ -21,17 +30,17 @@
         <div class="form-group row">
             <div class="col-xs-9">
                 <label class="control-label">End date</label>
-                <div class="input-group date" b-datepicker data-date-format="dd.mm.yyyy" ng-model="param.enddate">
-                    <input class="form-control" type="date" value="{{param.enddate}}">
+                <div class="input-group date" b-datepicker data-date-format="dd.mm.yyyy" ng-model="period.enddate">
+                    <input class="form-control" type="date" value="{{period.enddate}}">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                 </div>
             </div>
         </div>
-        
+
         <div class="form-group row">
             <div class="col-xs-9">
-            <label class="control-label"></label>
-            <button class="btn btn-default" ng-click="runQuery()">update</button>
+                <label class="control-label"></label>
+                <button class="btn btn-default" ng-click="runQuery()">update</button>
             </div>
         </div>
     </form>

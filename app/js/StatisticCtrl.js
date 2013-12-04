@@ -1,16 +1,37 @@
-hbControllers.controller('StatisticCtrl', ['$scope', 'Transaction',
-    function($scope, Transaction) {
-        
-        $scope.param = {
-            startdate: moment().format('DD.MM.YYYY'),
-            enddate: moment().format('DD.MM.YYYY'),
-        };
-        
+hbControllers.controller('StatisticCtrl', ['$scope', 'utils', 'Transaction',
+    function($scope, utils, Transaction) {
+
+        $scope.periods = [
+            {
+                title: 'last week',
+                startdate: utils.getFirstDayOfWeek(),
+                enddate: utils.getLastDayOfWeek()
+            },
+            {
+                title: 'last month',
+                startdate: utils.getFirstDayOfMonth(),
+                enddate: utils.getLastDayOfMonth()
+            },
+            {
+                title: 'last three month', id: 3
+            },
+            {
+                title: 'last half year', id: 4
+            },
+            {
+                title: 'last year',
+                startdate: utils.getFirstDayOfYear(),
+                enddate: utils.getLastDayOfYear()
+            }
+        ];
+
+        $scope.period = $scope.periods[1];
+
         $scope.fetch = function(callback) {
             var param = {
                 id: 'statistic',
-                startdate: $scope.param.startdate,
-                enddate: $scope.param.enddate                
+                startdate: $scope.period.startdate,
+                enddate: $scope.period.enddate
             };
             Transaction.query(param, function(data) {
                 $scope.transactions = data.items;
@@ -75,23 +96,34 @@ hbControllers.controller('StatisticCtrl', ['$scope', 'Transaction',
                 }
                 var item = {
                     value: amount,
-                    color: '#'+(Math.random()*0xFFFFFF<<0).toString(16),
-                    label: transaction.category,                    
+                    color: '#' + (Math.random() * 0xFFFFFF << 0).toString(16),
+                    label: transaction.category,
                     labelColor: 'white',
-                    labelFontSize: '16'                    
+                    labelFontSize: '16'
                 };
                 data.push(item);
             });
-            
+
             $scope.piechartOptions = {
                 animation: false
             };
-            
+
             $scope.piechart = data;
         };
-        
+
         $scope.runQuery = function() {
             $scope.fetch($scope.drawPiechart);
+        };
+
+        $scope.setPeriod = function() {
+            if ($scope.period.id === 1) {
+                $scope.param.startdate = utils.getFirstDayOfYear();
+                $scope.param.enddate = utils.getLastDayOfYear();
+            }
+            if ($scope.period.id === 5) {
+                $scope.param.startdate = utils.getFirstDayOfYear();
+                $scope.param.enddate = utils.getLastDayOfYear();
+            }
         };
 
         $scope.fetch($scope.drawPiechart);
