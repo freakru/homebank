@@ -9,6 +9,9 @@ hbControllers.controller('MenuCtrl', ['$scope',
             },
             {
                 link: '#/statistic', title: 'Statistic'
+            },
+            {
+                link: '#/import', title: 'Import'
             }
         ];
 }]);

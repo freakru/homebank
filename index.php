@@ -24,6 +24,8 @@ $app->group('/api', function () use ($app) {
         $app->get('/importGoogledrive', array ($ctrl, 'importGoogledrive'));
         $app->get('/', array ($ctrl, 'index'));
         
+        $app->post('/import', array ($ctrl, 'import'));        
+        
         $app->post('/', array ($ctrl, 'save'));
         $app->put('/:id', array ($ctrl, 'update'));
         $app->delete('/:id', array ($ctrl, 'delete'));

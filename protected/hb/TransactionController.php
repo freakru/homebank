@@ -41,7 +41,7 @@ class TransactionController extends Controller {
         $transactions = $db->transaction()
                 ->order('date')
                 ->limit($limit, $page * $limit);
-        
+
         foreach ($transactions as $transaction) {
             $result->items[] = array(
                 'id' => $transaction['id'],
@@ -112,26 +112,22 @@ class TransactionController extends Controller {
                 }
                 $rawCategory = $csvData['5'];
                 $categoryName = '';
-                if (strstr($rawCategory, 'ELLER-MONTAN')
-                        || strstr($rawCategory, 'TANKSTELLE')) {
+                if (strstr($rawCategory, 'ELLER-MONTAN') || strstr($rawCategory, 'TANKSTELLE')) {
                     $categoryName = 'Auto';
                 }
-                if (strstr($rawCategory, 'NETTO-EINFACH')
-                        ||strstr($rawCategory, 'KAUFPARK')) {
+                if (strstr($rawCategory, 'NETTO-EINFACH') || strstr($rawCategory, 'KAUFPARK')) {
                     $categoryName = 'Lebensmittel';
                 }
-                if (strstr($rawCategory, 'ELENA MAER')
-                        ||strstr($rawCategory, 'STADTWERKE')) {
+                if (strstr($rawCategory, 'ELENA MAER') || strstr($rawCategory, 'STADTWERKE')) {
                     $categoryName = 'Haus';
                 }
-                if (strstr($rawCategory, 'O2')
-                        ||strstr($rawCategory, 'UNITYMEDIA')) {
+                if (strstr($rawCategory, 'O2') || strstr($rawCategory, 'UNITYMEDIA')) {
                     $categoryName = 'Telefon';
                 }
                 if (strstr($rawCategory, 'BITMARCK')) {
                     $categoryName = 'Gehalt';
                 }
-                
+
                 $category = new \hb\model\Category();
                 $cat = $category->get('name', $categoryName);
                 if (!$cat['id']) {
@@ -195,6 +191,18 @@ class TransactionController extends Controller {
         fclose($handle);
     }
 
+    public function import() {
+        $file = $_FILES['file'];
+
+        if ($file['error'] === 0) {
+            $name = uniqid('import' . date('Ymd') . '-').'csv';
+            if (move_uploaded_file($file['tmp_name'], 'data/' . $name) === true) {
+                $imgs[] = array('url' => '/uploads/' . $name, 'name' => $file['name']);
+            }
+        }
+        echo 'ok';
+    }
+
     public function statistic() {
         $app = \Slim\Slim::getInstance();
         $req = $app->request();
@@ -236,5 +244,5 @@ class TransactionController extends Controller {
 
         echo json_encode($result);
     }
-    
+
 }
