@@ -13,12 +13,6 @@ hbControllers.controller('StatisticCtrl', ['$scope', 'utils', 'Transaction',
                 enddate: utils.getLastDayOfMonth()
             },
             {
-                title: 'last three month', id: 3
-            },
-            {
-                title: 'last half year', id: 4
-            },
-            {
                 title: 'last year',
                 startdate: utils.getFirstDayOfYear(),
                 enddate: utils.getLastDayOfYear()

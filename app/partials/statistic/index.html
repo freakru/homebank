@@ -11,7 +11,7 @@
         <div class="form-group row">
             <div class="col-xs-9">
                 <label class="control-label">Period</label>
-                <select class="form-control" ng-model="period" ng-options="p.title for p in periods">
+                <select class="form-control" ng-model="period" ng-options="p.title for p in periods" ng-change="fetch()">
                     <option value="">-- period --</option>
                 </select>
             </div>
@@ -47,5 +47,7 @@
 </div>
 
 <div class="col-md-12 column">
+    <div ng-show="!transactions"><h1>No data</h1>
+        <p>Sorry, is is no data for selected period.</p></div>
     <div ng-include="" src="'partials/statistic/piechart.html'"></div>
 </div>
