@@ -20,7 +20,7 @@ class CategoryController extends Controller {
 
     public function index() {
         $db = $this->getDb();
-        $categories = $db->category();
+        $categories = $db->category()->order('name');
         $result = array();
         if ($categories === null) {
             echo json_encode($result);
