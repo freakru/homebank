@@ -157,8 +157,7 @@ class TransactionController extends Controller {
         }
     }
 
-    public function importGoogledrive() {
-        $fileName = 'data/gd/02.2011.csv';
+    public function importGoogledrive($fileName) {
         $row = 0;
         $transaction = new \hb\model\Transaction();
         $handle = fopen($fileName, "r");
@@ -195,11 +194,12 @@ class TransactionController extends Controller {
         $file = $_FILES['file'];
 
         if ($file['error'] === 0) {
-            $name = uniqid('import' . date('Ymd') . '-').'csv';
+            $name = uniqid('import' . date('Ymd') . '-').'.csv';
             if (move_uploaded_file($file['tmp_name'], 'data/' . $name) === true) {
-                $imgs[] = array('url' => '/uploads/' . $name, 'name' => $file['name']);
+                $this->importGoogledrive('data/' . $name);
             }
         }
+        //$fileName = 'data/gd/02.2011.csv';
         echo 'ok';
     }
 
