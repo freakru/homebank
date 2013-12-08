@@ -11,7 +11,7 @@
         <div class="form-group row">
             <div class="col-xs-9">
                 <label class="control-label">Period</label>
-                <select class="form-control" ng-model="period" ng-options="p.title for p in periods" ng-change="fetch()">
+                <select class="form-control" ng-model="period" ng-options="p.title for p in periods" ng-change="runQuery()">
                     <option value="">-- period --</option>
                 </select>
             </div>

@@ -120,5 +120,5 @@ hbControllers.controller('StatisticCtrl', ['$scope', 'utils', 'Transaction',
             }
         };
 
-        $scope.fetch($scope.drawPiechart);
+        $scope.runQuery();
     }]);
