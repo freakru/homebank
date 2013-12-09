@@ -26,8 +26,67 @@ class TransactionController extends Controller {
 
         echo json_encode(array($result));
     }
-
+    
     public function index() {
+        $app = \Slim\Slim::getInstance();
+        $req = $app->request();
+        $itemPerPage = 10;
+        $limit = $req->params('limit') ? $req->params('limit') : $itemPerPage;
+        $page = $req->params('page') ? $req->params('page') - 1 : 0;
+        
+        $month = $req->params('month') >= 0  ? $req->params('month') + 1 : date('m');
+        $firstDay = '01.' . $month . '.' . date('Y');
+        $lastDay = date("t.m.Y", strtotime(date('Y') . '-' . $month . '-01'));
+        
+        $db = $this->getDb();
+        $result = new \stdClass();
+        $totalItems = $db->transaction()->count('*');
+        $result->totalItems = $totalItems;
+        $startMonth = $db->transaction()
+                ->select('account_id, SUM(amount) amount')
+                ->where('date < ?', util\DateUtil::formatMysql($firstDay))
+                ->group('account_id');
+        
+        $endMonth = $db->transaction()
+                ->select('account_id, SUM(amount) amount')
+                ->where('date <= ?', util\DateUtil::formatMysql($lastDay))
+                ->group('account_id');
+        
+        $transactions = $db->transaction()
+                ->order('date')
+                ->where('date >= ? and date <= ?', util\DateUtil::formatMysql($firstDay), util\DateUtil::formatMysql($lastDay));
+
+        
+        foreach ($startMonth as $start) {
+            $result->start = $start['amount'];
+        }
+        foreach ($endMonth as $end) {
+            $result->end = $end['amount'];
+        }
+        
+        $diff = $result->start;
+        foreach ($transactions as $transaction) {
+            $diff +=  + $transaction['amount'];
+            $result->items[] = array(
+                'id' => $transaction['id'],
+                'account' => $transaction->account['name'],
+                'account_to' => $transaction->account_to['name'],
+                'date' => \hb\util\DateUtil::formatGerman($transaction['date']),
+                'category' => array(
+                    'id' => $transaction->category['id'],
+                    'name' => $transaction->category['name'],
+                    'symbol' => $transaction->category['symbol']),
+                'type' => $transaction->type['name'],
+                'comment' => $transaction['comment'],
+                'amount' => $transaction['amount'],
+                'diff' => $diff
+            );
+            
+        }
+        echo json_encode($result);
+    }
+
+    public function index1() {
         $app = \Slim\Slim::getInstance();
         $req = $app->request();
         $itemPerPage = 10;

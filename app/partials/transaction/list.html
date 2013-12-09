@@ -1,12 +1,15 @@
 <div class="col-md-4 column">
     <h3>Balance: </h3>
     <ul class="list-group">
-        <li class="list-group-item" ng-repeat="b in balance">{{b.account}}: {{b.amount | number:2}} €</li>
+        <li class="list-group-item" ng-repeat="b in balance">{{b.account}}: {{b.amount| number:2}} €</li>
     </ul>
     <div ng-include="" src="'partials/transaction/form.html'"></div>
 </div>
 
 <div class="col-md-8 column">
+    <select class="form-control" ng-model="searchPeriod" ng-options="p.name for p in searchPeriods" ng-change="fetch()">
+        <option value="">-- month --</option>
+    </select>
     <table class="table table-bordered table-hover table-condensed">
         <thead>
             <tr>
@@ -14,6 +17,7 @@
                 <th>Category</th>
                 <th>Comment</th>
                 <th class="col-sm-2 text-right">Amount</th>
+                <th class="col-sm-1 text-right">Diff</th>
                 <th class="col-sm-1"></th>
             </tr>
         </thead>
@@ -23,6 +27,7 @@
             <td><span class="glyphicon glyphicon-{{transaction.category.symbol}}"></span> {{transaction.category.name}}</td>
             <td>{{transaction.comment}}</td>
             <td class="text-right {{cssClass(transaction.amount)}}">{{transaction.amount|number:2}} €</td>
+            <td class="text-right"><span class="small">{{transaction.diff|number:2}} €</span></td>
             <td>
                 <a class="btn btn-xs" ng-click="edit(transaction)" title="edit"><i class="icon-pencil icon-white"></i>...</a>
                 <a class="btn btn-xs" ng-click="remove(transaction)" title="delete"><i class="icon-trash icon-white"></i>X</a>

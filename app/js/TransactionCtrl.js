@@ -9,6 +9,14 @@ hbControllers.controller('TransactionCtrl', ['$scope', 'Transaction', 'Account',
             $scope.currentPage = page;
             $scope.fetch();
         };
+        $scope.searchPeriods = [];
+        angular.forEach(moment().lang()._months, function(name, key) {
+            $scope.searchPeriods.push({
+                name: name,
+                key: key
+            });
+        });
+        $scope.searchPeriod = $scope.searchPeriods[0];
 
         $scope.accounts = Account.query();
         $scope.categories = Category.query();
@@ -29,7 +37,7 @@ hbControllers.controller('TransactionCtrl', ['$scope', 'Transaction', 'Account',
 
         $scope.edit = function(transaction) {
             $scope.transaction = transaction;
-            
+
             // select right account
             angular.forEach($scope.accounts, function(value, key) {
                 if ($scope.accounts[key].name === $scope.transaction.account) {
@@ -37,7 +45,7 @@ hbControllers.controller('TransactionCtrl', ['$scope', 'Transaction', 'Account',
                     return false;
                 }
             });
-            
+
             // select right category
             angular.forEach($scope.categories, function(value, key) {
                 if ($scope.categories[key].name === $scope.transaction.category.name) {
@@ -53,8 +61,7 @@ hbControllers.controller('TransactionCtrl', ['$scope', 'Transaction', 'Account',
 
         $scope.fetch = function() {
             var param = {
-                limit: 10,
-                page: $scope.currentPage
+                month: $scope.searchPeriod.key
             };
             Transaction.query({id: 'balance'}, function(data) {
                 $scope.balance = data.items;
