@@ -25,8 +25,8 @@ hbControllers.controller('TransactionCtrl', ['$scope', 'Transaction', 'Account',
 
         $scope.save = function() {
             if (typeof $scope.transaction.id !== 'undefined') {
-                //Transaction.update($scope.transaction);
-                $scope.transaction.$update();
+                Transaction.update($scope.transaction);
+                //$scope.transaction.$update();
             } else {
 
                 $scope.transaction.$save();
