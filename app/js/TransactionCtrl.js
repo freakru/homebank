@@ -16,7 +16,7 @@ hbControllers.controller('TransactionCtrl', ['$scope', 'Transaction', 'Account',
                 key: key
             });
         });
-        $scope.searchPeriod = $scope.searchPeriods[0];
+        $scope.searchPeriod = $scope.searchPeriods[moment().month()];
 
         $scope.accounts = Account.query();
         $scope.categories = Category.query();
