@@ -1,53 +1,58 @@
-<div class="col-md-12 column">
-    <ul class="nav navbar-nav">
-        <li>
-            <a href="#/statistic/chart">Chart</a>
-        </li>
-    </ul>
-</div>
-<div class="col-md-12 column">
-    <form class="form-inline" role="form">
+<div class="row">
+    <div class="col-md-2 column">
+        <ul class="nav navbar-nav">
+            <li>
+                <a href="#/statistic/piechart">Chart</a>
+            </li>
+            <li>
+                <a href="#/statistic/barchart">Bar</a>
+            </li>
+        </ul>
+    </div>
+    <div class="col-md-10 column">
+        <form class="form-inline" role="form">
 
-        <div class="form-group row">
-            <div class="col-xs-9">
-                <label class="control-label">Period</label>
-                <select class="form-control" ng-model="period" ng-options="p.title for p in periods" ng-change="runQuery()">
-                    <option value="">-- period --</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <div class="col-xs-9">
-                <label class="control-label">Start date</label>
-                <div class="input-group date" b-datepicker data-date-format="dd.mm.yyyy" ng-model="period.startdate">
-                    <input class="form-control" type="date" value="{{period.startdate}}">
-                    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+            <div class="form-group row">
+                <div class="col-xs-9">
+                    <label class="control-label">Period</label>
+                    <select class="form-control" ng-model="period" ng-options="p.title for p in periods" ng-change="runQuery()">
+                        <option value="">-- period --</option>
+                    </select>
                 </div>
             </div>
-        </div>
 
-        <div class="form-group row">
-            <div class="col-xs-9">
-                <label class="control-label">End date</label>
-                <div class="input-group date" b-datepicker data-date-format="dd.mm.yyyy" ng-model="period.enddate">
-                    <input class="form-control" type="date" value="{{period.enddate}}">
-                    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+            <div class="form-group row">
+                <div class="col-xs-9">
+                    <label class="control-label">Start date</label>
+                    <div class="input-group date" b-datepicker data-date-format="dd.mm.yyyy" ng-model="period.startdate">
+                        <input class="form-control" type="date" value="{{period.startdate}}">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="form-group row">
-            <div class="col-xs-9">
-                <label class="control-label"></label>
-                <button class="btn btn-default" ng-click="runQuery()">update</button>
+            <div class="form-group row">
+                <div class="col-xs-9">
+                    <label class="control-label">End date</label>
+                    <div class="input-group date" b-datepicker data-date-format="dd.mm.yyyy" ng-model="period.enddate">
+                        <input class="form-control" type="date" value="{{period.enddate}}">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                    </div>
+                </div>
             </div>
-        </div>
-    </form>
+
+            <div class="form-group row">
+                <div class="col-xs-9">
+                    <label class="control-label"></label>
+                    <button class="btn btn-default" ng-click="runQuery()">update</button>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
 
 <div class="col-md-12 column">
     <div ng-show="!transactions"><h1>No data</h1>
         <p>Sorry, is is no data for selected period.</p></div>
-    <div ng-include="" src="'partials/statistic/piechart.html'"></div>
+    <div ng-show="transactions" ng-include="" src="chart"></div>
 </div>

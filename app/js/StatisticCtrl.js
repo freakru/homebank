@@ -1,5 +1,5 @@
-hbControllers.controller('StatisticCtrl', ['$scope', 'utils', 'Transaction',
-    function($scope, utils, Transaction) {
+hbControllers.controller('StatisticCtrl', ['$scope', '$routeParams', 'utils', 'Transaction',
+    function($scope, $routeParams, utils, Transaction) {
 
         $scope.periods = [
             {
@@ -37,11 +37,14 @@ hbControllers.controller('StatisticCtrl', ['$scope', 'utils', 'Transaction',
         $scope.drawBarchart = function() {
             var labels = [];
             var data = [];
-            var sum = 2800;
             $scope.transactions.forEach(function(transaction) {
-                sum += parseFloat(transaction.amount, 10);
-                labels.push(transaction.date);
-                data.push(sum);
+                var amount = parseFloat(transaction.amount, 10);
+                if (amount > 0) {
+                    return false;
+                }
+                
+                labels.push(transaction.category);
+                data.push(-amount);
             });
 
             $scope.barchartOptions = {
@@ -54,7 +57,7 @@ hbControllers.controller('StatisticCtrl', ['$scope', 'utils', 'Transaction',
                 //The percentage of the chart that we cut out of the middle.
                 percentageInnerCutout: 50,
                 //Boolean - Whether we should animate the chart
-                animation: true,
+                animation: false,
                 //Number - Amount of animation steps
                 animationSteps: 100,
                 //String - Animation easing effect
@@ -106,7 +109,13 @@ hbControllers.controller('StatisticCtrl', ['$scope', 'utils', 'Transaction',
         };
 
         $scope.runQuery = function() {
-            $scope.fetch($scope.drawPiechart);
+            if ($routeParams.type === 'piechart') {
+                $scope.chart = 'partials/statistic/piechart.html';
+                $scope.fetch($scope.drawPiechart);
+            } else {
+                $scope.chart = 'partials/statistic/barchart.html';
+                $scope.fetch($scope.drawBarchart);
+            }            
         };
 
         $scope.setPeriod = function() {
