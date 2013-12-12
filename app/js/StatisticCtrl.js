@@ -109,7 +109,8 @@ hbControllers.controller('StatisticCtrl', ['$scope', '$routeParams', 'utils', 'T
         };
 
         $scope.runQuery = function() {
-            if ($routeParams.type === 'piechart') {
+            $scope.type = $routeParams.type;
+            if ($scope.type === 'piechart') {
                 $scope.chart = 'partials/statistic/piechart.html';
                 $scope.fetch($scope.drawPiechart);
             } else {
