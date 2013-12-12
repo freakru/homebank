@@ -119,16 +119,5 @@ hbControllers.controller('StatisticCtrl', ['$scope', '$routeParams', 'utils', 'T
             }            
         };
 
-        $scope.setPeriod = function() {
-            if ($scope.period.id === 1) {
-                $scope.param.startdate = utils.getFirstDayOfYear();
-                $scope.param.enddate = utils.getLastDayOfYear();
-            }
-            if ($scope.period.id === 5) {
-                $scope.param.startdate = utils.getFirstDayOfYear();
-                $scope.param.enddate = utils.getLastDayOfYear();
-            }
-        };
-
         $scope.runQuery();
     }]);
