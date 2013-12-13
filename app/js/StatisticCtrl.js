@@ -1,5 +1,7 @@
 hbControllers.controller('StatisticCtrl', ['$scope', '$routeParams', 'utils', 'Transaction',
     function($scope, $routeParams, utils, Transaction) {
+        $scope.labels = [];
+        $scope.datasets = [];
 
         $scope.periods = [
             {
@@ -29,23 +31,35 @@ hbControllers.controller('StatisticCtrl', ['$scope', '$routeParams', 'utils', 'T
             };
             Transaction.query(param, function(data) {
                 $scope.transactions = data.items;
+                $scope.prepareBarchartData(data.items);
                 callback();
             });
             $scope.orderProp = 'age';
         };
-
-        $scope.drawBarchart = function() {
-            var labels = [];
+        
+        $scope.prepareBarchartData = function(rawTransactions) {
+            
             var data = [];
-            $scope.transactions.forEach(function(transaction) {
+            rawTransactions.forEach(function(transaction) {
                 var amount = parseFloat(transaction.amount, 10);
                 if (amount > 0) {
                     return false;
                 }
+                if($scope.labels.indexOf(transaction.category) === -1) {
+                    $scope.labels.push(transaction.category);
+                }
                 
-                labels.push(transaction.category);
                 data.push(-amount);
             });
+            $scope.datasets.push({
+                        fillColor: "rgba(220,220,220,0.5)",
+                        strokeColor: "rgba(220,220,220,1)",
+                        data: data
+                    });
+        };
+
+        $scope.drawBarchart = function() {
+            
 
             $scope.barchartOptions = {
                 //Boolean - Whether we should show a stroke on each segment
@@ -71,13 +85,8 @@ hbControllers.controller('StatisticCtrl', ['$scope', '$routeParams', 'utils', 'T
             };
 
             $scope.barchart = {
-                labels: labels,
-                datasets: [{
-                        fillColor: "rgba(220,220,220,0.5)",
-                        strokeColor: "rgba(220,220,220,1)",
-                        data: data
-                    }
-                ],
+                labels: $scope.labels,
+                datasets: $scope.datasets
             };
         };
 
@@ -118,6 +127,15 @@ hbControllers.controller('StatisticCtrl', ['$scope', '$routeParams', 'utils', 'T
                 $scope.fetch($scope.drawBarchart);
             }            
         };
+        
+        $scope.addBarchartData = function() {
+            $scope.period.startdate = '01.01.2012';
+            $scope.period.enddate = '31.12.2012';
+            $scope.fetch(function() {
+                
+            });
+        };
 
         $scope.runQuery();
+        $scope.addBarchartData();
     }]);
