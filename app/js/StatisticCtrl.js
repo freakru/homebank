@@ -52,8 +52,8 @@ hbControllers.controller('StatisticCtrl', ['$scope', '$routeParams', 'utils', 'T
                 data.push(-amount);
             });
             $scope.datasets.push({
-                        fillColor: "rgba(220,220,220,0.5)",
-                        strokeColor: "rgba(220,220,220,1)",
+                        fillColor: 'rgba('+utils.getDecColor()+',0.5)',
+                        strokeColor: 'rgba('+utils.getDecColor()+',1)',
                         data: data
                     });
         };
