@@ -102,7 +102,7 @@ hbControllers.controller('StatisticCtrl', ['$scope', '$routeParams', 'utils', 'T
                 }
                 var item = {
                     value: amount,
-                    color: '#' + (Math.random() * 0xFFFFFF << 0).toString(16),
+                    color: utils.getHexColor(),
                     label: transaction.category,
                     labelColor: 'white',
                     labelFontSize: '16'

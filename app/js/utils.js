@@ -27,6 +27,17 @@ hbApp.factory('utils', function() {
         getDecColor: function() {
             var color = (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256));
             return color;
+        },
+        getHexColor: function() {
+            var color = '';
+            for(;;) {
+                color = "#" + Math.random().toString(16).slice(2, 8);
+                if (color !== '#ffffff') {
+                    break;
+                }
+            }
+            return color;
+            
         }
     };
 });
