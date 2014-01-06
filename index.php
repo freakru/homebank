@@ -22,6 +22,8 @@ $app->group('/api', function () use ($app) {
         $app->get('/balance', array ($ctrl, 'balance'));
         $app->get('/importSparkasse', array ($ctrl, 'importSparkasse'));
         $app->get('/importGoogledrive', array ($ctrl, 'importGoogledrive'));
+        
+        // get transactions for period
         $app->get('/', array ($ctrl, 'index'));
         
         $app->post('/import', array ($ctrl, 'import'));        

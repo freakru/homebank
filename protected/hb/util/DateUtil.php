@@ -32,6 +32,6 @@ class DateUtil {
         $dateArr = explode('.', $germanDate);
         $result = strtotime($dateArr[2] . '-' . $dateArr[1] . '-01');
         $result = strtotime('-1 day', strtotime('+1 month', $result));
-        return date('Y-m-d', $result);
+        return date('d.m.Y', $result);
     }
 }

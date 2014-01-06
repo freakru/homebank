@@ -34,9 +34,8 @@ class TransactionController extends Controller {
         $limit = $req->params('limit') ? $req->params('limit') : $itemPerPage;
         $page = $req->params('page') ? $req->params('page') - 1 : 0;
         
-        $month = $req->params('month') >= 0  ? $req->params('month') + 1 : date('m');
-        $firstDay = '01.' . $month . '.' . date('Y');
-        $lastDay = date("t.m.Y", strtotime(date('Y') . '-' . $month . '-01'));
+        $firstDay = $req->params('month') ? $req->params('month') : date('m');
+        $lastDay = util\DateUtil::calcLastDateOfMonth($firstDay);
         
         $db = $this->getDb();
         $result = new \stdClass();
@@ -159,8 +158,7 @@ class TransactionController extends Controller {
         echo json_encode(array('status' => 'ok'));
     }
 
-    public function importSparkasse() {
-        $fileName = 'data/10.2013.sparkasse.csv';
+    public function importSparkasse($fileName) {
         $db = $this->getDb();
         $row = 0;
         if (($handle = fopen($fileName, "r")) !== FALSE) {
@@ -255,7 +253,8 @@ class TransactionController extends Controller {
         if ($file['error'] === 0) {
             $name = uniqid('import' . date('Ymd') . '-').'.csv';
             if (move_uploaded_file($file['tmp_name'], 'data/' . $name) === true) {
-                $this->importGoogledrive('data/' . $name);
+                $this->importSparkasse('data/' . $name);
+                //$this->importGoogledrive('data/' . $name);
             }
         }
         //$fileName = 'data/gd/02.2011.csv';
