@@ -27,12 +27,12 @@ class TransactionController extends Controller {
         echo json_encode(array($result));
     }
     
+    /**
+     * transactions list for given month
+     */
     public function index() {
         $app = \Slim\Slim::getInstance();
         $req = $app->request();
-        $itemPerPage = 10;
-        $limit = $req->params('limit') ? $req->params('limit') : $itemPerPage;
-        $page = $req->params('page') ? $req->params('page') - 1 : 0;
         
         $firstDay = $req->params('month') ? $req->params('month') : date('m');
         $lastDay = util\DateUtil::calcLastDateOfMonth($firstDay);
@@ -81,39 +81,6 @@ class TransactionController extends Controller {
                 'diff' => $diff
             );
             
-        }
-        echo json_encode($result);
-    }
-
-    public function index1() {
-        $app = \Slim\Slim::getInstance();
-        $req = $app->request();
-        $itemPerPage = 10;
-        $limit = $req->params('limit') ? $req->params('limit') : $itemPerPage;
-        $page = $req->params('page') ? $req->params('page') - 1 : 0;
-
-        $db = $this->getDb();
-        $result = new \stdClass();
-        $totalItems = $db->transaction()->count('*');
-        $result->totalItems = $totalItems;
-        $transactions = $db->transaction()
-                ->order('date')
-                ->limit($limit, $page * $limit);
-
-        foreach ($transactions as $transaction) {
-            $result->items[] = array(
-                'id' => $transaction['id'],
-                'account' => $transaction->account['name'],
-                'account_to' => $transaction->account_to['name'],
-                'date' => \hb\util\DateUtil::formatGerman($transaction['date']),
-                'category' => array(
-                    'id' => $transaction->category['id'],
-                    'name' => $transaction->category['name'],
-                    'symbol' => $transaction->category['symbol']),
-                'type' => $transaction->type['name'],
-                'comment' => $transaction['comment'],
-                'amount' => $transaction['amount']
-            );
         }
         echo json_encode($result);
     }
