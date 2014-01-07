@@ -9,27 +9,23 @@ hbControllers.controller('TransactionCtrl', ['$scope', 'Transaction', 'Account',
             $scope.currentPage = page;
             $scope.fetch();
         };
-        
-        // drop down for select month
-        $scope.searchPeriods = [];
-        $scope.searchPeriods.push({
-            name: moment().year() - 1
-        });
 
         $scope.accounts = Account.query();
         $scope.categories = Category.query();
 
         $scope.transaction = new Transaction;
         
-        $scope.pupulateSearchPeriods = function(year) {
+        $scope.getSearchPeriods = function(year) {
+            var periods = [];
             angular.forEach(moment().lang()._months, function(name, key) {
                 key++;
                 var month = key > 9 ? key : '0' + key;
-                $scope.searchPeriods.push({
+                periods.push({
                     name: name + ', ' + year,
                     key: '01.' + month + '.' + year
                 });
             });
+            return periods;
         };
 
         $scope.save = function() {
@@ -72,7 +68,8 @@ hbControllers.controller('TransactionCtrl', ['$scope', 'Transaction', 'Account',
             if (!$scope.searchPeriod.key) {
                 $scope.searchPeriods.splice(0, 1);
                 var year = parseInt($scope.searchPeriod.name, 10);
-                $scope.pupulateSearchPeriods(year);
+                var newPeriods = $scope.getSearchPeriods(year);
+                $scope.searchPeriods = newPeriods.concat($scope.searchPeriods);
                 $scope.searchPeriods.unshift({ name: year - 1 });
                 return;
             }
@@ -107,8 +104,12 @@ hbControllers.controller('TransactionCtrl', ['$scope', 'Transaction', 'Account',
             return cssClass;
         };
         
-        $scope.pupulateSearchPeriods(moment().year());
-        $scope.searchPeriod = $scope.searchPeriods[moment().month() + 1];
+        // drop down for select month        
+        $scope.searchPeriods = $scope.getSearchPeriods(moment().year());
+        $scope.searchPeriod = $scope.searchPeriods[moment().month()];
+        $scope.searchPeriods.unshift({
+            name: moment().year() - 1
+        });
 
         $scope.fetch();
     }]);
