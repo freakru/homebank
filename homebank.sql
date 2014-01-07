@@ -66,7 +66,14 @@ INSERT INTO `category` (`id`, `name`, `symbol`) VALUES
 (6, 'Versicherung', 'flash'),
 (7, 'Haus', 'home'),
 (8, 'Telefon', 'phone'),
-(9, 'Gehalt', 'usd');
+(9, 'Gehalt', 'usd'),
+(10, 'Bar', NULL),
+(11, 'Sparkasse', 'wrench'),
+(12, 'Urlaub', NULL),
+(13, 'Umzug', NULL),
+(14, '', NULL),
+(15, 'Polizei', NULL),
+(16, 'Geschenk', NULL);
 
 -- --------------------------------------------------------
 
@@ -112,6 +119,31 @@ INSERT INTO `type` (`id`, `name`) VALUES
 (2, 'expense'),
 (3, 'transfer'),
 (4, 'balance');
+
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `loan`
+--
+
+CREATE TABLE IF NOT EXISTS `loan` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(128) NOT NULL,
+  `date` datetime NOT NULL,
+  `amount` decimal(10,2) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+--
+-- Daten für Tabelle `loan`
+--
+
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
