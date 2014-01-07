@@ -36,6 +36,8 @@ class TransactionController extends Controller {
         
         $firstDay = $req->params('month') ? $req->params('month') : date('m');
         $lastDay = util\DateUtil::calcLastDateOfMonth($firstDay);
+        $firstDay = util\DateUtil::formatMysql($firstDay);
+        $lastDay = util\DateUtil::formatMysql($lastDay);
         
         $db = $this->getDb();
         $result = new \stdClass();
@@ -43,17 +45,17 @@ class TransactionController extends Controller {
         $result->totalItems = $totalItems;
         $startMonth = $db->transaction()
                 ->select('account_id, SUM(amount) amount')
-                ->where('date < ?', util\DateUtil::formatMysql($firstDay))
+                ->where('date < ?', $firstDay)
                 ->group('account_id');
         
         $endMonth = $db->transaction()
                 ->select('account_id, SUM(amount) amount')
-                ->where('date <= ?', util\DateUtil::formatMysql($lastDay))
+                ->where('date <= ?', $lastDay)
                 ->group('account_id');
         
         $transactions = $db->transaction()
                 ->order('date')
-                ->where('date >= ? and date <= ?', util\DateUtil::formatMysql($firstDay), util\DateUtil::formatMysql($lastDay));
+                ->where('date >= ? and date <= ?', $firstDay, $lastDay);
 
         
         foreach ($startMonth as $start) {
@@ -65,6 +67,10 @@ class TransactionController extends Controller {
         
         $diff = $result->start;
         foreach ($transactions as $transaction) {
+            $loan = array();
+            if ($transaction->category['id'] == CATEGORY_LOAN) {
+                $loan = $this->calculateLoan($transaction['comment'], $lastDay);
+            }
             $diff +=  + $transaction['amount'];
             $result->items[] = array(
                 'id' => $transaction['id'],
@@ -77,12 +83,32 @@ class TransactionController extends Controller {
                     'symbol' => $transaction->category['symbol']),
                 'type' => $transaction->type['name'],
                 'comment' => $transaction['comment'],
+                'loan' => $loan,
                 'amount' => $transaction['amount'],
                 'diff' => $diff
             );
             
         }
         echo json_encode($result);
+    }
+    
+    private function calculateLoan($comment, $lastDay) {
+        $db = $this->getDb();
+        $loan = $db->loan('name = ?', $comment)->fetch();
+        $payment = $db->transaction()
+                ->select('COUNT(*) count, SUM(amount) amount')
+                ->where('category_id = ? AND comment = ? and date <= ?', CATEGORY_LOAN, $comment, $lastDay)
+                ->fetch();
+        $balance = $loan['amount'] + $payment['amount'];
+        $rate = round(($loan['amount'] - $balance) / $payment['count'], 2);
+        $countMonth = intval($loan['amount'] / $rate);
+        $startDate = strtotime($loan['date']);
+        $endDate = date('d.m.Y', strtotime(date("Y-m-d", $startDate) . '+'.$countMonth.' month'));
+        
+        return array(
+            'date' => $endDate,
+            'balance' => $loan['amount'] + $payment['amount']                
+        );
     }
 
     public function save() {

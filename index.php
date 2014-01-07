@@ -7,6 +7,8 @@ require_once __DIR__.'/vendor/autoload.php';
 $handle = fopen('x.txt', "a");
 define('STDERR', $handle);
 
+define('CATEGORY_LOAN', 4);
+
 $c = new \hb\TransactionController();
 
 $app = new \Slim\Slim(array(
