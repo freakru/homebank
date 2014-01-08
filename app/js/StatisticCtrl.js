@@ -51,42 +51,33 @@ hbControllers.controller('StatisticCtrl', ['$scope', '$routeParams', 'utils', 'T
                 
                 data.push(-amount);
             });
-            $scope.datasets.push({
-                        fillColor: 'rgba('+utils.getDecColor()+',0.5)',
-                        strokeColor: 'rgba('+utils.getDecColor()+',1)',
-                        data: data
-                    });
+            $scope.datasets = data;
         };
 
         $scope.drawBarchart = function() {
-            
-
-            $scope.barchartOptions = {
-                //Boolean - Whether we should show a stroke on each segment
-                segmentShowStroke: true,
-                //String - The colour of each segment stroke
-                segmentStrokeColor: "#fff",
-                //Number - The width of each segment stroke
-                segmentStrokeWidth: 24,
-                //The percentage of the chart that we cut out of the middle.
-                percentageInnerCutout: 50,
-                //Boolean - Whether we should animate the chart
-                animation: false,
-                //Number - Amount of animation steps
-                animationSteps: 100,
-                //String - Animation easing effect
-                animationEasing: "easeOutBounce",
-                //Boolean - Whether we animate the rotation of the Doughnut
-                animateRotate: true,
-                //Boolean - Whether we animate scaling the Doughnut from the centre
-                animateScale: false,
-                //Function - Will fire on animation completion.
-                onAnimationComplete: null
-            };
-
-            $scope.barchart = {
-                labels: $scope.labels,
-                datasets: $scope.datasets
+            $scope.chart = {
+                options: {
+                    chart: {
+                        type: $scope.type
+                    }
+                },
+                xAxis: {
+                    categories: $scope.labels
+                },
+                series: [{
+                        data: $scope.datasets
+                }],
+                plotOptions: {
+                    bar: {
+                        dataLabels: {
+                            enabled: true
+                        }
+                    }
+                },
+                title: {
+                    text: 'Hello'
+                },
+                loading: false
             };
         };
 

@@ -8,7 +8,7 @@ var hbApp = angular.module('hbApp', [
   'hbControllers',
   'phonecatFilters',
   'hbServices',
-  'angles',
+  'highcharts-ng',
   'ui.bootstrap',
   'angularFileUpload'
 ]);

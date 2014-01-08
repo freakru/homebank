@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-md-2 column">
-        <a href="#/statistic/piechart" class="btn btn-default" ng-class="{active: type == 'piechart'}">Chart</a>
-        <a href="#/statistic/barchart" class="btn btn-default" ng-class="{active: type == 'barchart'}">Bar</a>
+        <a href="#/statistic/pie" class="btn btn-default" ng-class="{active: type == 'pie'}">Pie</a>
+        <a href="#/statistic/bar" class="btn btn-default" ng-class="{active: type == 'bar'}">Bar</a>
     </div>
     <div class="col-md-10 column">
         <form class="form-inline" role="form">
@@ -47,6 +47,7 @@
 
 <div class="col-md-12 column">
     <div ng-show="!transactions"><h1>No data</h1>
-        <p>Sorry, is is no data for selected period.</p></div>
-    <div ng-show="transactions" ng-include="" src="chart"></div>
+        <p>Sorry, is is no data for selected period.</p>
+    </div>
+    <highchart ng-show="transactions" id="chart" config="chart" class="span10"></highchart>
 </div>
