@@ -281,7 +281,7 @@ class TransactionController extends Controller {
     }
 
     public function balance() {
-        $db = $this->getDb();
+        $db = $this->getDb();        
         $transactions = $db->transaction()
                 ->select('account_id, SUM(amount) amount')
                 ->group('account_id');
@@ -291,8 +291,21 @@ class TransactionController extends Controller {
                 'account' => $transaction->account['name'],
                 'amount' => $transaction['amount']
             );
+        }       
+        
+        // calculate sum of all loans
+        $loanSum = 0;
+        $lastDay = util\DateUtil::formatMysql('31.12.9999');
+        $loans = $db->loan();
+        foreach ($loans as $loan) {
+            $loanCalculation = $this->calculateLoan($loan['name'], $lastDay);
+            $loanSum += $loanCalculation['balance'];
         }
-
+        $result->items[] = array(
+            'account' => 'Kredite',
+            'amount' => -$loanSum
+        );
+        
         echo json_encode($result);
     }
 
