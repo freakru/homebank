@@ -8,6 +8,9 @@ $handle = fopen('x.txt', "a");
 define('STDERR', $handle);
 
 define('CATEGORY_LOAN', 4);
+define('TYPE_INCOME', 1);
+define('TYPE_EXPENSE', 2);
+define('TYPE_TRANSFER', 3);
 
 $c = new \hb\TransactionController();
 

@@ -285,13 +285,34 @@ class TransactionController extends Controller {
         $transactions = $db->transaction()
                 ->select('account_id, SUM(amount) amount')
                 ->group('account_id');
-        $result = new \stdClass();
+        $accounts = array();
         foreach ($transactions as $transaction) {
+            $accounts[$transaction->account['name']] = $transaction['amount'];
+        }
+        
+        // transfer sum
+        $transfers = $db->transaction()
+                ->select('account_to_id, SUM(amount) amount')
+                ->where('account_to_id IS NOT NULL')
+                ->group('account_to_id');
+        foreach ($transfers as $transfer) {
+            $account = $db->account('id = ?', $transfer['account_to_id'])->fetch();
+            $accountName = $account['name'];
+            $amount = -$transfer['amount'];
+            
+            if (array_key_exists($accountName, $accounts)) {
+                $amount += $accounts[$accountName];
+            }
+            $accounts[$accountName] = $amount;
+        }
+        
+        $result = new \stdClass();
+        foreach ($accounts as $accountName => $amount) {
             $result->items[] = array(
-                'account' => $transaction->account['name'],
-                'amount' => $transaction['amount']
+                'account' => $accountName,
+                'amount' => $amount
             );
-        }       
+        }        
         
         // calculate sum of all loans
         $loanSum = 0;
@@ -305,7 +326,7 @@ class TransactionController extends Controller {
             'account' => 'Kredite',
             'amount' => -$loanSum
         );
-        
+
         echo json_encode($result);
     }
 
