@@ -12,6 +12,9 @@ hbControllers.controller('MenuCtrl', ['$scope',
             },
             {
                 link: '#/import', title: 'Import'
+            },
+            {
+                link: '#/category', title: 'Categories'
             }
         ];
 }]);

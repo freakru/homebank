@@ -15,6 +15,12 @@ class Category extends Model {
     
     public function save($data) {
         $model = $this->db->category();
+        
+        if (isset($data['id'])) {
+            $model = $this->db->category[$data['id']];
+            return $model->update($data);
+        }
+        
         return $model->insert($data);
     }
 }

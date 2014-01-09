@@ -35,4 +35,36 @@ class CategoryController extends Controller {
         }
         echo json_encode($result);
     }
+    
+    public function save() {
+        $app = \Slim\Slim::getInstance();
+        $message = json_decode($app->request->getBody());
+        $data = array(
+            'name' => $message->name,
+            'symbol' => $message->symbol
+        );
+        $category = new \hb\model\Category();
+        $category->save($data);
+        echo json_encode(array('status' => 'ok'));
+    }
+    
+    public function update() {
+        $app = \Slim\Slim::getInstance();
+        $message = json_decode($app->request->getBody());
+        $data = array(
+            'id' => $message->id,
+            'symbol' => $message->symbol,
+            'name' => $message->name
+        );
+        $category = new \hb\model\Category();
+        $c = $category->save($data);
+        echo json_encode($c);
+    }
+    
+    public function delete($id) {
+        $db = $this->getDb();
+        $category = $db->category[$id];
+        $category->delete();
+        echo json_encode(array('status' => 'ok'));
+    }
 }

@@ -40,6 +40,10 @@ hbApp.config(['$routeProvider',
         templateUrl: 'partials/import/index.html',
         controller: 'ImportCtrl'
       }).
+      when('/category', {
+        templateUrl: 'partials/category/index.html',
+        controller: 'CategoryCtrl'
+      }).
       otherwise({
         redirectTo: '/transactions'
       });

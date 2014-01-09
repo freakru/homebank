@@ -27,10 +27,9 @@ hbServices.factory('Transaction', ['$resource',
 .factory('Category', ['$resource',
     function($resource) {
         return $resource('../index.php/api/category/:id', {}, {
-            query: {
-                method: 'GET',
-                params: {id: ''},
-                isArray: true
-            }
+            query: { method: 'GET', params: {id: ''}, isArray: true},
+            create: { method: 'POST'},
+            update: { method: 'PUT', params: {id: '@id'} },
+            delete: { method: 'DELETE', params: {id: '@id'} }
         });
 }]);

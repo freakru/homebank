@@ -49,6 +49,10 @@ $app->group('/api', function () use ($app) {
         $ctrl = new \hb\CategoryController();
         $app->get('/:id', array ($ctrl, 'get'))->conditions(array('id' => '\d+'));
         $app->get('/', array ($ctrl, 'index'));
+        
+        $app->post('/', array ($ctrl, 'save'));
+        $app->put('/:id', array ($ctrl, 'update'));
+        $app->delete('/:id', array ($ctrl, 'delete'));
     });
 });
 
