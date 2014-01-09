@@ -8,7 +8,7 @@ hbControllers.controller('MenuCtrl', ['$scope',
                 link: '#/transactions', title: 'Transactions'
             },
             {
-                link: '#/statistic', title: 'Statistic'
+                link: '#/statistic/bar', title: 'Statistic'
             },
             {
                 link: '#/import', title: 'Import'
