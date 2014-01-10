@@ -1,6 +1,6 @@
 hbControllers.controller('StatisticCtrl', ['$scope', '$routeParams', 'utils', 'Transaction',
-    function($scope, $routeParams, utils, Transaction) {        
-
+    function($scope, $routeParams, utils, Transaction) {
+        
         $scope.periods = [
             {
                 title: 'last week',
@@ -68,6 +68,11 @@ hbControllers.controller('StatisticCtrl', ['$scope', '$routeParams', 'utils', 'T
                 xAxis: {
                     categories: $scope.labels
                 },
+                yAxis: {
+                    title: {
+                        enabled: false
+                    }
+                },
                 series: [{
                         data: $scope.datasets
                 }],
@@ -78,8 +83,11 @@ hbControllers.controller('StatisticCtrl', ['$scope', '$routeParams', 'utils', 'T
                         }
                     }
                 },
+                legend: {
+                    enabled: false
+                },
                 title: {
-                    text: 'Hello'
+                    text: $scope.period.startdate + ' - ' + $scope.period.enddate
                 },
                 loading: false
             };
@@ -115,10 +123,8 @@ hbControllers.controller('StatisticCtrl', ['$scope', '$routeParams', 'utils', 'T
         $scope.runQuery = function() {
             $scope.type = $routeParams.type;
             if ($scope.type === 'piechart') {
-                $scope.chart = 'partials/statistic/piechart.html';
                 $scope.fetch($scope.drawPiechart);
             } else {
-                $scope.chart = 'partials/statistic/barchart.html';
                 $scope.fetch($scope.drawBarchart);
             }            
         };

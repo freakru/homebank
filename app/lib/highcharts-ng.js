@@ -64,6 +64,7 @@ angular.module('highcharts-ng', [])
         series: [],
         credits: {},
         plotOptions: {},
+        legend: {},
         navigator: {enabled: false}
       };
 
@@ -111,6 +112,9 @@ angular.module('highcharts-ng', [])
       }
       if (config.plotOptions) {
         mergedOptions.plotOptions = config.plotOptions;
+      }
+      if (config.legend) {
+        mergedOptions.legend = config.legend;
       }
       return mergedOptions;
     };
