@@ -32,7 +32,12 @@ hbControllers.controller('StatisticCtrl', ['$scope', '$routeParams', 'utils', 'T
             };
             Transaction.query(param, function(data) {
                 $scope.transactions = data.items;
-                $scope.prepareBarchartData(data.items);
+                
+                $scope.transactions.sort(function(a, b) {
+                    return a['amount'] < b['amount'];
+                });
+                
+                $scope.prepareBarchartData($scope.transactions);
                 callback();
             });
             $scope.orderProp = 'age';
