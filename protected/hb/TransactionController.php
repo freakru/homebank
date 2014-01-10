@@ -271,9 +271,12 @@ class TransactionController extends Controller {
                 ->group('category_id');
         $result = new \stdClass();
         foreach ($transactions as $transaction) {
+            if ($transaction['amount'] > 0) {
+                continue;
+            }
             $result->items[] = array(
                 'category' => $transaction->category['name'],
-                'amount' => $transaction['amount']
+                'amount' => -$transaction['amount']
             );
         }
 

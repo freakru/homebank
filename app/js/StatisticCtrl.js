@@ -1,7 +1,5 @@
 hbControllers.controller('StatisticCtrl', ['$scope', '$routeParams', 'utils', 'Transaction',
-    function($scope, $routeParams, utils, Transaction) {
-        $scope.labels = [];
-        $scope.datasets = [];
+    function($scope, $routeParams, utils, Transaction) {        
 
         $scope.periods = [
             {
@@ -24,6 +22,9 @@ hbControllers.controller('StatisticCtrl', ['$scope', '$routeParams', 'utils', 'T
         $scope.period = $scope.periods[1];
 
         $scope.fetch = function(callback) {
+            $scope.labels = [];
+            $scope.datasets = [];
+        
             var param = {
                 id: 'statistic',
                 startdate: $scope.period.startdate,
@@ -42,14 +43,12 @@ hbControllers.controller('StatisticCtrl', ['$scope', '$routeParams', 'utils', 'T
             var data = [];
             rawTransactions.forEach(function(transaction) {
                 var amount = parseFloat(transaction.amount, 10);
-                if (amount > 0) {
-                    return false;
-                }
+                
                 if($scope.labels.indexOf(transaction.category) === -1) {
                     $scope.labels.push(transaction.category);
                 }
                 
-                data.push(-amount);
+                data.push(amount);
             });
             $scope.datasets = data;
         };
@@ -128,5 +127,5 @@ hbControllers.controller('StatisticCtrl', ['$scope', '$routeParams', 'utils', 'T
         };
 
         $scope.runQuery();
-        $scope.addBarchartData();
+        //$scope.addBarchartData();
     }]);
