@@ -1,6 +1,6 @@
 hbControllers.controller('StatisticCtrl', ['$scope', '$routeParams', 'utils', 'Transaction',
     function($scope, $routeParams, utils, Transaction) {
-        
+
         $scope.periods = [
             {
                 title: 'last week',
@@ -24,7 +24,7 @@ hbControllers.controller('StatisticCtrl', ['$scope', '$routeParams', 'utils', 'T
         $scope.fetch = function(callback) {
             $scope.labels = [];
             $scope.datasets = [];
-        
+
             var param = {
                 id: 'statistic',
                 startdate: $scope.period.startdate,
@@ -32,27 +32,36 @@ hbControllers.controller('StatisticCtrl', ['$scope', '$routeParams', 'utils', 'T
             };
             Transaction.query(param, function(data) {
                 $scope.transactions = data.items;
-                
+
                 $scope.transactions.sort(function(a, b) {
                     return a['amount'] < b['amount'];
                 });
-                
+
                 $scope.prepareBarchartData($scope.transactions);
                 callback();
             });
         };
-        
+
         $scope.prepareBarchartData = function(rawTransactions) {
-            
+
             var data = [];
+            $scope.sum = 0;
+            rawTransactions.forEach(function(transaction) {
+                $scope.sum += transaction.amount;
+            });
+
             rawTransactions.forEach(function(transaction) {
                 var amount = parseFloat(transaction.amount, 10);
-                
-                if($scope.labels.indexOf(transaction.category) === -1) {
+
+                if ($scope.type === 'pie') {
+                    amount = amount / $scope.sum * 100;
+                }
+
+                if ($scope.labels.indexOf(transaction.category) === -1) {
                     $scope.labels.push(transaction.category);
                 }
-                
-                data.push(amount);
+
+                data.push([transaction.category, amount]);
             });
             $scope.datasets = data;
         };
@@ -74,11 +83,19 @@ hbControllers.controller('StatisticCtrl', ['$scope', '$routeParams', 'utils', 'T
                 },
                 series: [{
                         data: $scope.datasets
-                }],
+                    }],
                 plotOptions: {
                     bar: {
                         dataLabels: {
                             enabled: true
+                        }
+                    },
+                    pie: {
+                        dataLabels: {
+                            enabled: true,
+                            formatter: function() {
+                                return this.key + ': ' + Highcharts.numberFormat(this.y, 2) + '%';
+                            }
                         }
                     }
                 },
@@ -94,7 +111,7 @@ hbControllers.controller('StatisticCtrl', ['$scope', '$routeParams', 'utils', 'T
 
         $scope.runQuery = function() {
             $scope.type = $routeParams.type;
-            $scope.fetch($scope.drawChart);         
+            $scope.fetch($scope.drawChart);
         };
 
         $scope.runQuery();
