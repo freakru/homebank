@@ -40,7 +40,6 @@ hbControllers.controller('StatisticCtrl', ['$scope', '$routeParams', 'utils', 'T
                 $scope.prepareBarchartData($scope.transactions);
                 callback();
             });
-            $scope.orderProp = 'age';
         };
         
         $scope.prepareBarchartData = function(rawTransactions) {
@@ -58,7 +57,7 @@ hbControllers.controller('StatisticCtrl', ['$scope', '$routeParams', 'utils', 'T
             $scope.datasets = data;
         };
 
-        $scope.drawBarchart = function() {
+        $scope.drawChart = function() {
             $scope.chart = {
                 options: {
                     chart: {
@@ -93,50 +92,10 @@ hbControllers.controller('StatisticCtrl', ['$scope', '$routeParams', 'utils', 'T
             };
         };
 
-        $scope.drawPiechart = function() {
-            var data = [];
-            if (!$scope.transactions) {
-                return false;
-            }
-            $scope.transactions.forEach(function(transaction) {
-                var amount = parseFloat(transaction.amount, 10);
-                if (amount > 0) {
-                    return;
-                }
-                var item = {
-                    value: amount,
-                    color: utils.getHexColor(),
-                    label: transaction.category,
-                    labelColor: 'white',
-                    labelFontSize: '16'
-                };
-                data.push(item);
-            });
-
-            $scope.piechartOptions = {
-                animation: false
-            };
-
-            $scope.piechart = data;
-        };
-
         $scope.runQuery = function() {
             $scope.type = $routeParams.type;
-            if ($scope.type === 'piechart') {
-                $scope.fetch($scope.drawPiechart);
-            } else {
-                $scope.fetch($scope.drawBarchart);
-            }            
-        };
-        
-        $scope.addBarchartData = function() {
-            $scope.period.startdate = '01.01.2012';
-            $scope.period.enddate = '31.12.2012';
-            $scope.fetch(function() {
-                
-            });
+            $scope.fetch($scope.drawChart);         
         };
 
         $scope.runQuery();
-        //$scope.addBarchartData();
     }]);
