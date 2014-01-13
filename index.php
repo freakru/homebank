@@ -41,8 +41,11 @@ $app->group('/api', function () use ($app) {
     });
     
     $app->group('/account', function () use ($app) {
-        $accountCtrl = new \hb\AccountController();
-        $app->get('/', array ($accountCtrl, 'index'));
+        $ctrl = new \hb\AccountController();
+        $app->get('/', array ($ctrl, 'index'));
+        $app->post('/', array ($ctrl, 'save'));
+        $app->put('/:id', array ($ctrl, 'update'));
+        $app->delete('/:id', array ($ctrl, 'delete'));
     });
     
     $app->group('/category', function () use ($app) {

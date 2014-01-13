@@ -44,6 +44,10 @@ hbApp.config(['$routeProvider',
         templateUrl: 'partials/category/index.html',
         controller: 'CategoryCtrl'
       }).
+      when('/account', {
+        templateUrl: 'partials/account/index.html',
+        controller: 'AccountCtrl'
+      }).
       otherwise({
         redirectTo: '/transactions'
       });

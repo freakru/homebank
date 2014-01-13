@@ -15,6 +15,9 @@ hbControllers.controller('MenuCtrl', ['$scope',
             },
             {
                 link: '#/category', title: 'Categories'
+            },
+            {
+                link: '#/account', title: 'Accounts'
             }
         ];
 }]);

@@ -16,11 +16,10 @@ hbServices.factory('Transaction', ['$resource',
 .factory('Account', ['$resource',
     function($resource) {
         return $resource('../index.php/api/account/:id', {}, {
-            query: {
-                method: 'GET',
-                params: {id: ''},
-                isArray: true
-            }
+            query: { method: 'GET', params: {id: ''}, isArray: true},
+            create: { method: 'POST'},
+            update: { method: 'PUT', params: {id: '@id'} },
+            delete: { method: 'DELETE', params: {id: '@id'} }
         });
 }])
 
