@@ -88,7 +88,8 @@ hbControllers.controller('TransactionCtrl', ['$scope', 'Transaction', 'Account',
         };
 
         $scope.remove = function(transaction) {
-            transaction.$delete();
+            Transaction.delete(transaction);
+            $scope.fetch();
         };
 
         $scope.cssClass = function(amount) {
