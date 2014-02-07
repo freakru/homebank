@@ -13,7 +13,10 @@ hbControllers.controller('TransactionCtrl', ['$scope', 'Transaction', 'Account',
         $scope.accounts = Account.query();
         $scope.categories = Category.query();
 
-        $scope.transaction = new Transaction;
+        $scope.newTransaction = function() {            
+            $scope.transaction = new Transaction;
+            $scope.transaction.date = moment().format('DD.MM.YYYY');        
+        };
         
         $scope.getSearchPeriods = function(year) {
             var periods = [];
@@ -38,6 +41,7 @@ hbControllers.controller('TransactionCtrl', ['$scope', 'Transaction', 'Account',
                 //Transaction.create($scope.transaction);
             }
             $scope.fetch();
+            $scope.newTransaction();            
         };
 
         $scope.edit = function(transaction) {
@@ -113,4 +117,5 @@ hbControllers.controller('TransactionCtrl', ['$scope', 'Transaction', 'Account',
         });
 
         $scope.fetch();
+        $scope.newTransaction();
     }]);
