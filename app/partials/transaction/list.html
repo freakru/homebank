@@ -39,8 +39,8 @@
             <td>{{transaction.date}}</td>
             <td><span class="glyphicon glyphicon-{{transaction.category.symbol}}"></span> {{transaction.category.name}}</td>
             <td>{{transaction.comment}}
-                <span class="label label-primary
-                      " ng-show="transaction.loan.date">{{transaction.loan.date}}, {{transaction.loan.balance|number:2}} €</span>
+                <span class="label label-primary" ng-show="transaction.loan.date">{{transaction.loan.date}}, {{transaction.loan.balance|number:2}} €</span>
+                <span class="label label-default" ng-show="transaction.account_to">{{transaction.account}} &rarr; {{transaction.account_to.name}}</span>
             </td>
             <td class="text-right {{cssClass(transaction.amount)}}">{{transaction.amount|number:2}} €</td>
             <td class="text-right"><span class="small">{{transaction.diff|number:2}} €</span></td>

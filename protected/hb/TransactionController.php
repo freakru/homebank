@@ -78,10 +78,19 @@ class TransactionController extends Controller {
                 $loan = $this->calculateLoan($transaction['comment'], $lastDay);
             }
             $diff +=  + $transaction['amount'];
+            
+            // get transfer acoount
+            $accountTo = null;
+            if ($transaction['account_to_id']) {
+                $account = $db->account[$transaction['account_to_id']];
+                $accountTo = array('id' => $account['id'],
+                    'name' => $account['name']);
+                //var_dump($account->account_to_id);
+            }
             $result->items[] = array(
                 'id' => $transaction['id'],
                 'account' => $transaction->account['name'],
-                'account_to' => $transaction->account_to['name'],
+                'account_to' => $accountTo,
                 'date' => \hb\util\DateUtil::formatGerman($transaction['date']),
                 'category' => array(
                     'id' => $transaction->category['id'],
