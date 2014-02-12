@@ -64,9 +64,11 @@ class TransactionController extends Controller {
                 ->where('date >= ? and date <= ?' . $conditionAccount, $firstDay, $lastDay);
 
         
+        $result->start = 0;
         foreach ($startMonth as $start) {
             $result->start = $start['amount'];
         }
+        $result->end = 0;
         foreach ($endMonth as $end) {
             $result->end = $end['amount'];
         }
