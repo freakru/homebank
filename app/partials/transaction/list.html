@@ -9,7 +9,20 @@
 <div class="col-md-8 column">
     <select class="form-control" ng-model="searchPeriod" ng-options="p.name for p in searchPeriods" ng-change="fetch()">
         <option value="">-- month --</option>
-    </select>
+    </select><br>
+
+    <div class="btn-group">
+        <button type="button" class="btn btn-primary"
+                ng-model="accountFilter.model"
+                btn-radio="'0'"
+                ng-change="fetch()"
+                >All</button>
+        <button ng-repeat="acc in accounts"
+            type="button" class="btn btn-primary" ng-model="accountFilter.model"
+            btn-radio="acc.id"
+            ng-change="fetch()">{{acc.name}}</button>
+    </div><br><br>
+
     <table class="table table-bordered table-hover table-condensed">
         <thead>
             <tr>

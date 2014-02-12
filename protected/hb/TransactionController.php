@@ -28,12 +28,18 @@ class TransactionController extends Controller {
     }
     
     /**
-     * transactions list for given month
+     * transactions list for given month and account
+     * account == 0 - for all tranactions
      */
     public function index() {
         $app = \Slim\Slim::getInstance();
         $req = $app->request();
         
+        $account = $req->params('account') ? (int)$req->params('account') : 0;
+        $conditionAccount = '';
+        if ($account !== 0) {
+            $conditionAccount = ' and account_id = ' . $account;
+        }
         $firstDay = $req->params('month') ? $req->params('month') : date('m');
         $lastDay = util\DateUtil::calcLastDateOfMonth($firstDay);
         $firstDay = util\DateUtil::formatMysql($firstDay);
@@ -45,17 +51,17 @@ class TransactionController extends Controller {
         $result->totalItems = $totalItems;
         $startMonth = $db->transaction()
                 ->select('account_id, SUM(amount) amount')
-                ->where('date < ?', $firstDay)
+                ->where('date < ?' . $conditionAccount, $firstDay)
                 ->group('account_id');
         
         $endMonth = $db->transaction()
                 ->select('account_id, SUM(amount) amount')
-                ->where('date <= ?', $lastDay)
+                ->where('date <= ?' . $conditionAccount, $lastDay)
                 ->group('account_id');
         
         $transactions = $db->transaction()
                 ->order('date')
-                ->where('date >= ? and date <= ?', $firstDay, $lastDay);
+                ->where('date >= ? and date <= ?' . $conditionAccount, $firstDay, $lastDay);
 
         
         foreach ($startMonth as $start) {
