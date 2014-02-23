@@ -135,7 +135,7 @@ class TransactionController extends Controller {
             'account_id' => $message->account->id,
             'date' => $message->date,
             'category_id' => $message->category->id,
-            'type_id' => 1, //$message->type->id,
+            'type_id' => TransactionController::$EXPENSE,
             'comment' => isset($message->comment) ? $message->comment : '',
             'amount' => $message->amount
         );
@@ -284,7 +284,7 @@ class TransactionController extends Controller {
         $end = util\DateUtil::formatMysql($endDate);
         $transactions = $db->transaction()
                 ->select('category_id, SUM(amount) amount')
-                ->where('date > ? and date < ?', $start, $end)
+                ->where('date > ? and date < ? and type_id = ?', $start, $end, TransactionController::$EXPENSE)
                 ->group('category_id');
         $result = new \stdClass();
         foreach ($transactions as $transaction) {
