@@ -135,7 +135,7 @@ class TransactionController extends Controller {
             'account_id' => $message->account->id,
             'date' => $message->date,
             'category_id' => $message->category->id,
-            'type_id' => TransactionController::$EXPENSE,
+            'type_id' => isset($message->type) ? $message->type : TransactionController::$INCOME,
             'comment' => isset($message->comment) ? $message->comment : '',
             'amount' => $message->amount
         );

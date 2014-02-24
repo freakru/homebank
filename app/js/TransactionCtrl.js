@@ -1,6 +1,6 @@
 hbControllers.controller('TransactionCtrl', ['$scope', 'Transaction', 'Account', 'Category',
     function($scope, Transaction, Account, Category) {
-
+               
         $scope.totalItems = 0;
         $scope.currentPage = 1;
         $scope.maxSize = 10;
