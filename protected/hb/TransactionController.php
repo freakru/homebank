@@ -256,6 +256,41 @@ class TransactionController extends Controller {
         }
         fclose($handle);
     }
+    
+    public function importSparda($fileName) {
+        $row = 0;
+        $transaction = new \hb\model\Transaction();
+        $handle = fopen($fileName, "r");
+        while (($csvData = fgetcsv($handle, 1000, "\t")) !== FALSE) {
+            $row++;
+            if ($row < 11 || count($csvData) < 2) {
+                continue;
+            }
+
+            $categoryUtil = new \hb\util\CategoryUtil();
+            $categoryName = $categoryUtil->parseCategory($csvData[2]);
+            $category = new \hb\model\Category();
+
+            $cat = $category->get('name', $categoryName);
+            if (!$cat['id']) {
+                //$cat = $category->save(array('name' => $csvData[1]));
+            }
+            $amount = str_replace('.', '', $csvData[3]);
+            $amount = str_replace(',', '.', $amount);
+            $type = strpos('-', $amount) === false ? TransactionController::$INCOME : TransactionController::$EXPENSE;
+            
+            $data = array(
+                'account_id' => 5,
+                'date' => $csvData[0],
+                'category_id' => $cat['id'],
+                'type_id' => $type,
+                'comment' => $csvData[2],
+                'amount' => $amount
+            );
+            $transaction->save($data);
+        }
+        fclose($handle);
+    }
 
     public function import() {
         $file = $_FILES['file'];
@@ -263,7 +298,8 @@ class TransactionController extends Controller {
         if ($file['error'] === 0) {
             $name = uniqid('import' . date('Ymd') . '-').'.csv';
             if (move_uploaded_file($file['tmp_name'], 'data/' . $name) === true) {
-                $this->importSparkasse('data/' . $name);
+                $this->importSparda('data/' . $name);
+                //$this->importSparkasse('data/' . $name);
                 //$this->importGoogledrive('data/' . $name);
             }
         }
