@@ -24,6 +24,7 @@ $app->group('/api', function () use ($app) {
         $ctrl = new \hb\TransactionController();
         $app->get('/:id', array ($ctrl, 'get'))->conditions(array('id' => '\d+'));
         $app->get('/statistic', array ($ctrl, 'statistic'));
+        $app->get('/statisticIncomeExpense', array ($ctrl, 'statisticIncomeExpense'));
         $app->get('/balance', array ($ctrl, 'balance'));
         $app->get('/importSparkasse', array ($ctrl, 'importSparkasse'));
         $app->get('/importGoogledrive', array ($ctrl, 'importGoogledrive'));

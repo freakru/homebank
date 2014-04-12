@@ -4,7 +4,19 @@
     </div>
     <div class="navbar-collapse collapse" ng-controller="MenuCtrl">
         <ul class="nav navbar-nav">
-            <li ng-repeat="menuItem in menuItems"><a href="{{menuItem.link}}">{{menuItem.title}}</a></li>
+            <li><a href="#/transactions">Transactions</a></li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Statistic <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li><a href="#/statistic/bar">Bar</a></li>
+                    <li><a href="#/statisticIncomeExpense">Income/Expense</a></li>
+                </ul>
+            </li>
+            
+            <li><a href="#/statistic">Statistic</a></li>
+            <li><a href="#/import">Import</a></li>
+            <li><a href="#/category">Categories</a></li>
+            <li><a href="#/account">Accounts</a></li>
         </ul>
     </div><!--/.nav-collapse -->
 </div>
