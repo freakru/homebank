@@ -320,7 +320,7 @@ class TransactionController extends Controller {
         $end = util\DateUtil::formatMysql($endDate);
         $transactions = $db->transaction()
                 ->select('category_id, SUM(amount) amount')
-                ->where('date > ? and date < ? and type_id = ?', $start, $end, TransactionController::$EXPENSE)
+                ->where('date >= ? and date <= ? and type_id = ?', $start, $end, TransactionController::$EXPENSE)
                 ->group('category_id');
         $result = new \stdClass();
         foreach ($transactions as $transaction) {
@@ -333,6 +333,53 @@ class TransactionController extends Controller {
             );
         }
 
+        echo json_encode($result);
+    }
+    
+    
+    public function statisticIncomeExpense() {
+        $app = \Slim\Slim::getInstance();
+        $req = $app->request();
+        $year = $req->params('year');
+
+        $db = $this->getDb();
+        
+        $result = new \stdClass();
+        $incomes = array();
+        $expenses = array();
+        for ($month  = 1; $month <= 12; $month++) {
+            $startDate = '01.' . $month . '.' . $year;
+            $datetime = \DateTime::createFromFormat('d.m.Y', $startDate);
+            $start = util\DateUtil::formatMysql($startDate);
+            $end = util\DateUtil::formatMysql($datetime->format('t.m.Y'));
+            $transactions = $db->transaction()
+                    ->select('type_id, SUM(amount) amount')
+                    ->where('date >= ? and date <= ?', $start, $end)
+                    ->group('type_id');
+            
+            if (!count($transactions)) {
+                $expenses[] = 0;
+                $incomes[] = 0;
+            }
+            
+            foreach ($transactions as $transaction) {
+                if ($transaction['type_id'] == TransactionController::$EXPENSE) {
+                    $transaction['amount'] = -$transaction['amount'];
+                    $expenses[] =  $transaction['amount'];
+                } else if ($transaction['type_id'] == TransactionController::$INCOME) {
+                    $incomes[] = +$transaction['amount'];
+                }
+            }            
+        }
+        $result->items[] = array(
+            'name' => 'incomes',
+            'data' => $incomes
+        );
+        $result->items[] = array(
+            'name' => 'expenses',
+            'data' => $expenses
+        );
+        
         echo json_encode($result);
     }
 
